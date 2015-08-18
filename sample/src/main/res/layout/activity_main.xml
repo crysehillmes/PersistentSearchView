@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.cryse.widget.persistentsearch.sample.MainActivity">
+
+    <Button
+        android:id="@+id/revealactivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:onClick="reveal"
+        android:text="@string/text_menuitem_sample" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="64dp"
+        android:elevation="2dp"
+        android:background="#FFFFFF"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/search_tint_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="2dp"
+        android:visibility="gone"
+        android:background="#88000000"
+        android:alpha="0.0"/>
+
+    <org.cryse.widget.persistentsearch.PersistentSearchView
+        android:id="@+id/searchview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:elevation="4dp"
+        app:persistentSV_logoDrawable="@drawable/ic_logo"
+        app:persistentSV_searchTextColor="?android:textColorPrimary"
+        app:persistentSV_editTextColor="?android:textColorPrimary"
+        app:persistentSV_editHintText="Search"
+        app:persistentSV_editHintTextColor="?android:textColorHint"
+        app:persistentSV_displayMode="displayAsToolbar"
+        app:persistentSV_searchCardElevation="2dp"/>
+</RelativeLayout>

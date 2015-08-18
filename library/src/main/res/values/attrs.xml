@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PersistentSearchView">
+        <attr name="persistentSV_searchTextColor" format="color"/>
+        <attr name="persistentSV_logoDrawable" format="reference"/>
+        <attr name="persistentSV_editTextColor" format="color"/>
+        <attr name="persistentSV_editHintText" format="string"/>
+        <attr name="persistentSV_editHintTextColor" format="color"/>
+        <attr name="persistentSV_searchCardElevation" format="dimension"/>
+        <attr name="persistentSV_displayMode" format="enum">
+            <enum name="displayAsMenuItem" value="0" />
+            <enum name="displayAsToolbar" value="1" />
+        </attr>
+        <attr name="persistentSV_homeButtonColor" format="color"/>
+    </declare-styleable>
+</resources>

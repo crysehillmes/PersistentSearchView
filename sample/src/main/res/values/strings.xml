@@ -4,5 +4,7 @@
     <string name="app_name">Persistent SearchView</string>
     <string name="text_menuitem_sample">MenuItem Sample</string>
     <string name="text_search_sample">Search Sample</string>
+    <string name="text_github_repo">GitHub Repo</string>
+    <string name="url_github_repo">https://github.com/crysehillmes/PersistentSearchView</string>
 
 </resources>

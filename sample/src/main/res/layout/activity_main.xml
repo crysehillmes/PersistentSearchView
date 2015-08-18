@@ -22,6 +22,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_search_sample" />
+
+        <Button
+            android:id="@+id/button_github_repo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_github"
+            android:drawablePadding="8dp"
+            android:text="@string/text_github_repo" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

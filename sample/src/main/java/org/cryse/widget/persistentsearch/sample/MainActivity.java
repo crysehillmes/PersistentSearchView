@@ -3,6 +3,7 @@ package org.cryse.widget.persistentsearch.sample;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,6 +24,7 @@ public class MainActivity extends Activity {
 	private PersistentSearchView mSearchView;
     private Button mMenuItemSampleButton;
     private Button mSearchSampleButton;
+    private Button mGithubRepoButton;
 	private View mSearchTintView;
     private SearchResultAdapter mResultAdapter;
     private RecyclerView mRecyclerView;
@@ -34,6 +36,7 @@ public class MainActivity extends Activity {
 		mSearchTintView = findViewById(R.id.view_search_tint);
         mMenuItemSampleButton = (Button) findViewById(R.id.button_reveal_sample);
         mSearchSampleButton = (Button) findViewById(R.id.button_search_sample);
+        mGithubRepoButton = (Button) findViewById(R.id.button_github_repo);
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview_search_result);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -49,6 +52,14 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            }
+        });
+        mGithubRepoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(getString(R.string.url_github_repo)));
+                startActivity(i);
             }
         });
 		mSearchView.enableVoiceRecognition(this);

@@ -11,6 +11,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.os.Build;
 import android.support.v7.app.SupportDrawerArrowDrawable;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.widget.ImageView;
 
 public class HomeButton extends ImageView {
@@ -27,6 +28,7 @@ public class HomeButton extends ImageView {
             }
         }
     }
+    private ArrowDrawablePositionProperty mArrowPositionProperty = new ArrowDrawablePositionProperty();
     private SupportDrawerArrowDrawable mArrowDrawable;
 
     private IconState mButtonState = IconState.BURGER;
@@ -76,12 +78,29 @@ public class HomeButton extends ImageView {
         if(Float.compare(from, to) == 0) {
             // mArrowDrawable.setPosition(mButtonState.toDrawablePosition());
         } else {
-            ObjectAnimator.ofFloat(mArrowDrawable, "position", from, to).setDuration(300).start();
+            ObjectAnimator.ofFloat(mArrowDrawable, mArrowPositionProperty, from, to).setDuration(mAnimationDuration).start();
         }
         //mArrowDrawable.setPosition(mButtonState.toDrawablePosition());
     }
 
     public void setAnimationDuration(long animationDuration) {
         this.mAnimationDuration = animationDuration;
+    }
+
+    static class ArrowDrawablePositionProperty extends Property<SupportDrawerArrowDrawable, Float> {
+
+        public ArrowDrawablePositionProperty() {
+            super(Float.TYPE, "position");
+        }
+
+        @Override
+        public void set(SupportDrawerArrowDrawable object, Float value) {
+            object.setPosition(value);
+        }
+
+        @Override
+        public Float get(SupportDrawerArrowDrawable object) {
+            return object.getPosition();
+        }
     }
 }

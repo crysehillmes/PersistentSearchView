@@ -27,8 +27,7 @@
                 android:layout_height="48dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:scaleType="center"
-                android:background="?selectableItemBackgroundBorderless"/>
+                android:scaleType="center"/>
 
             <org.cryse.widget.persistentsearch.LogoView
                 android:id="@+id/logoview"
@@ -77,8 +76,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:scaleType="center"
-                android:src="@drawable/ic_action_mic_black"
-                android:background="?selectableItemBackgroundBorderless"/>
+                android:src="@drawable/ic_action_mic_black"/>
 
         </RelativeLayout>
 

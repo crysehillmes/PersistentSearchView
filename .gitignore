@@ -44,13 +44,6 @@ proguard/
 *~
 *.swp
 
-# Crashlytics
-app/src/main/assets/crashlytics-build.properties
-app/crashlytics.properties
-
 # SigningConfig
-app/signing.properties
+signing.properties
 *.keystore
-
-# UMeng
-umeng_properties.xml

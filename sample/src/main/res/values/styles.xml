@@ -9,7 +9,7 @@
         <item name="colorPrimaryDark">#0288d1</item> <!-- md_light_blue_700 -->
         <item name="colorAccent">#E91E63</item> <!-- md_pink_500 -->
     </style>
-    <style name="AppTheme.DarkToolbar" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.DarkToolbar" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">#03a9f4</item> <!-- md_light_blue_500 -->
         <item name="colorPrimaryDark">#0288d1</item> <!-- md_light_blue_700 -->
         <item name="colorAccent">#E91E63</item> <!-- md_pink_500 -->

@@ -132,11 +132,8 @@ public class SearchActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if(mSearchView.isSearching()) {
-            mSearchView.closeSearch();
-        } else if(mRecyclerView.getVisibility() == View.VISIBLE) {
-            mResultAdapter.clear();
-            mRecyclerView.setVisibility(View.GONE);
+        if(mSearchView.isEditing()) {
+            mSearchView.cancelEditing();
         } else {
             super.onBackPressed();
         }

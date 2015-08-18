@@ -227,7 +227,7 @@ public class PersistentSearchView extends RevealViewGroup {
             public void onClick(View v) {
                 if (mCurrentState == SearchViewState.EDITING) {
                     cancelEditing();
-                } else if(mCurrentState == SearchViewState.SEARCH && mDisplayMode == DisplayMode.TOOLBAR_SEARCH) {
+                } else if (mCurrentState == SearchViewState.SEARCH && mDisplayMode == DisplayMode.TOOLBAR_SEARCH) {
                     if (mHomeButtonListener != null)
                         mHomeButtonListener.onHomeButtonClick();
                 } else if (mCurrentState == SearchViewState.SEARCH) {
@@ -765,6 +765,10 @@ public class PersistentSearchView extends RevealViewGroup {
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getApplicationWindowToken(),
                 0);
+    }
+
+    public boolean isEditing() {
+        return mCurrentState == SearchViewState.EDITING;
     }
 
     public boolean isSearching() {

@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +40,11 @@ public class MenuItemSampleActivity extends AppCompatActivity {
         mSearchView.enableVoiceRecognition(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);mSearchTintView = findViewById(R.id.view_search_tint);
 		this.setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         setUpSearchView();
     }
 
@@ -53,6 +59,9 @@ public class MenuItemSampleActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.action_search:
                 if(mSearchMenuItem != null) {
                     openSearch();

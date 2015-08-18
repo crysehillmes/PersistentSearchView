@@ -3,5 +3,6 @@
 
     <string name="app_name">Persistent SearchView</string>
     <string name="text_menuitem_sample">MenuItem Sample</string>
+    <string name="text_search_sample">Search Sample</string>
 
 </resources>

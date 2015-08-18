@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import org.cryse.widget.persistentsearch.PersistentSearchView;
@@ -19,45 +18,30 @@ import org.cryse.widget.persistentsearch.PersistentSearchView.SearchListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class SearchActivity extends Activity {
 	private PersistentSearchView mSearchView;
-    private Button mMenuItemSampleButton;
-    private Button mSearchSampleButton;
 	private View mSearchTintView;
     private SearchResultAdapter mResultAdapter;
     private RecyclerView mRecyclerView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_search);
 		mSearchView = (PersistentSearchView) findViewById(R.id.searchview);
 		mSearchTintView = findViewById(R.id.view_search_tint);
-        mMenuItemSampleButton = (Button) findViewById(R.id.button_reveal_sample);
-        mSearchSampleButton = (Button) findViewById(R.id.button_search_sample);
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview_search_result);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mResultAdapter = new SearchResultAdapter(new ArrayList<SearchResult>());
         mRecyclerView.setAdapter(mResultAdapter);
-        mMenuItemSampleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MenuItemSampleActivity.class));
-            }
-        });
-        mSearchSampleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-            }
-        });
 		mSearchView.enableVoiceRecognition(this);
+        mSearchView.openSearch("Text Query");
 		mSearchView.setHomeButtonListener(new HomeButtonListener() {
 
             @Override
             public void onHomeButtonClick() {
                 //Hamburger has been clicked
-                Toast.makeText(MainActivity.this, "Menu click", Toast.LENGTH_LONG).show();
+                finish();
             }
 
         });
@@ -84,6 +68,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onSearchEditClosed() {
+				//Use this to un-tint the screen
 				mSearchTintView
                         .animate()
                         .alpha(0.0f)
@@ -113,7 +98,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onSearch(String string) {
-				Toast.makeText(MainActivity.this, string +" Searched", Toast.LENGTH_LONG).show();
+				Toast.makeText(SearchActivity.this, string +" Searched", Toast.LENGTH_LONG).show();
                 mRecyclerView.setVisibility(View.VISIBLE);
                 fillResultToRecyclerView(string);
 			}
@@ -128,7 +113,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1234 && resultCode == RESULT_OK) {
+		if (requestCode == 8185102 && resultCode == RESULT_OK) {
 			ArrayList<String> matches = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			mSearchView.populateEditText(matches);

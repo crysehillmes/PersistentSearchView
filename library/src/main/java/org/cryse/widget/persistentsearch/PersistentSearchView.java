@@ -47,7 +47,7 @@ public class PersistentSearchView extends RevealViewGroup {
     public static final int VOICE_RECOGNITION_CODE = 8185102;
 
     public enum DisplayMode {
-        MENUITEM(0), TOOLBAR(1);
+        MENUITEM(0), TOOLBAR(1), TOOLBAR_SEARCH(2);
         int mode;
 
         DisplayMode(int mode) {
@@ -67,7 +67,7 @@ public class PersistentSearchView extends RevealViewGroup {
     }
 
     public enum SearchViewState {
-        TOOLBAR, MENUITEM, EDITING, SEARCH;
+        TOOLBAR, MENUITEM, EDITING, SEARCH, TOOLBAR_SEARCH;
     }
 
     private static final int DURATION_REVEAL_OPEN = 500;
@@ -175,6 +175,12 @@ public class PersistentSearchView extends RevealViewGroup {
                 mCardVisiblePadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_toolbar_mode);
                 setCurrentState(SearchViewState.TOOLBAR);
                 break;
+            case TOOLBAR_SEARCH:
+                mHomeButtonCloseIconState = HomeButton.IconState.ARROW;
+                mHomeButtonOpenIconState = HomeButton.IconState.ARROW;
+                mCardVisiblePadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_toolbar_mode);
+                setCurrentState(SearchViewState.TOOLBAR_SEARCH);
+                break;
         }
         mHomeButtonSearchIconState = HomeButton.IconState.ARROW;
 
@@ -219,9 +225,12 @@ public class PersistentSearchView extends RevealViewGroup {
         mHomeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCurrentState == SearchViewState.EDITING) {
+                if (mCurrentState == SearchViewState.EDITING) {
                     cancelEditing();
-                } else if(mCurrentState == SearchViewState.SEARCH) {
+                } else if(mCurrentState == SearchViewState.SEARCH && mDisplayMode == DisplayMode.TOOLBAR_SEARCH) {
+                    if (mHomeButtonListener != null)
+                        mHomeButtonListener.onHomeButtonClick();
+                } else if (mCurrentState == SearchViewState.SEARCH) {
                     stateFromSearchToNormal();
                 } else {
                     if (mHomeButtonListener != null)
@@ -234,9 +243,9 @@ public class PersistentSearchView extends RevealViewGroup {
 
             @Override
             public void onClick(View v) {
-                if(mCurrentState == SearchViewState.TOOLBAR) {
+                if (mCurrentState == SearchViewState.TOOLBAR) {
                     stateFromToolbarToEditing();
-                } else if(mCurrentState == SearchViewState.SEARCH) {
+                } else if (mCurrentState == SearchViewState.SEARCH) {
                     stateFromSearchToEditing();
                 }
             }
@@ -433,7 +442,7 @@ public class PersistentSearchView extends RevealViewGroup {
             @Override
             public void onAnimationEnd() {
                 setVisibility(View.GONE);
-                mSuggestionListView.setVisibility(View.GONE);
+                closeSearchInternal();
                 // closeSearch();
             }
 
@@ -548,6 +557,15 @@ public class PersistentSearchView extends RevealViewGroup {
      */
     public void populateEditText(ArrayList<String> matches) {
         String text = matches.get(0).trim();
+        populateEditText(text);
+    }
+
+    /***
+     * Populate the PersistentSearchView with search query
+     * @param query Matches
+     */
+    public void populateEditText(String query) {
+        String text = query.trim();
         setSearchString(text, true);
         search();
     }
@@ -792,12 +810,22 @@ public class PersistentSearchView extends RevealViewGroup {
             setCurrentState(SearchViewState.MENUITEM);
             setSearchString("", false);
             hideCircularlyToMenuItem();
+        } else if(mDisplayMode == DisplayMode.TOOLBAR_SEARCH) {
+            setCurrentState(SearchViewState.TOOLBAR_SEARCH);
+            setSearchString("", false);
+            closeSearchInternal();
         }
         if(mSearchListener != null)
             mSearchListener.onSearchExit();
     }
 
     private void stateFromEditingToSearch() {
+        setCurrentState(SearchViewState.SEARCH);
+        closeSearchInternal();
+    }
+
+    private void stateToSearch(String query) {
+        populateEditText(query);
         setCurrentState(SearchViewState.SEARCH);
         closeSearchInternal();
     }
@@ -811,6 +839,9 @@ public class PersistentSearchView extends RevealViewGroup {
         } else if(mDisplayMode == DisplayMode.MENUITEM) {
             setCurrentState(SearchViewState.MENUITEM);
             hideCircularlyToMenuItem();
+        } else if(mDisplayMode == DisplayMode.TOOLBAR_SEARCH) {
+            setCurrentState(SearchViewState.TOOLBAR);
+            closeSearchInternal();
         }
         if(mSearchListener != null)
             mSearchListener.onSearchExit();
@@ -845,6 +876,10 @@ public class PersistentSearchView extends RevealViewGroup {
             revealFromMenuItem(menuItemView, width);
             stateFromMenuItemToEditing();
         }
+    }
+
+    public void openSearch(String query) {
+        stateToSearch(query);
     }
 
     public void closeSearch() {

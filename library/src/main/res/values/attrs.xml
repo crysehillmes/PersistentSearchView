@@ -10,6 +10,7 @@
         <attr name="persistentSV_displayMode" format="enum">
             <enum name="displayAsMenuItem" value="0" />
             <enum name="displayAsToolbar" value="1" />
+            <enum name="displayAsToolbarSearch" value="2" />
         </attr>
         <attr name="persistentSV_homeButtonColor" format="color"/>
     </declare-styleable>

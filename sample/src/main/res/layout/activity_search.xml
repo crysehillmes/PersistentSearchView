@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_search_result"
@@ -12,36 +13,26 @@
         android:elevation="2dp"
         android:background="#FFFFFF"
         android:visibility="gone"/>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="?colorPrimary"
-        android:elevation="4dp"/>
-
     <View
         android:id="@+id/view_search_tint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="6dp"
+        android:elevation="2dp"
         android:visibility="gone"
         android:background="#88000000"
         android:alpha="0.0"/>
 
     <org.cryse.widget.persistentsearch.PersistentSearchView
-        android:layout_width="match_parent"
         android:id="@+id/searchview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:elevation="6dp"
-        app:persistentSV_displayMode="displayAsMenuItem"
-        app:persistentSV_searchTextColor="#DE000000"
-        app:persistentSV_editTextColor="#DE000000"
+        android:elevation="4dp"
+        app:persistentSV_logoDrawable="@drawable/ic_logo"
+        app:persistentSV_searchTextColor="?android:textColorPrimary"
+        app:persistentSV_editTextColor="?android:textColorPrimary"
         app:persistentSV_editHintText="Search"
-        app:persistentSV_editHintTextColor="#61000000"
-        app:persistentSV_searchCardElevation="4dp"/>
-
+        app:persistentSV_editHintTextColor="?android:textColorHint"
+        app:persistentSV_displayMode="displayAsToolbarSearch"
+        app:persistentSV_searchCardElevation="2dp"/>
 </RelativeLayout>

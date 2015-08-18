@@ -70,8 +70,8 @@ public class PersistentSearchView extends RevealViewGroup {
         TOOLBAR, MENUITEM, EDITING, SEARCH, TOOLBAR_SEARCH;
     }
 
-    private static final int DURATION_REVEAL_OPEN = 500;
-    private static final int DURATION_REVEAL_CLOSE = 500;
+    private static final int DURATION_REVEAL_OPEN = 400;
+    private static final int DURATION_REVEAL_CLOSE = 300;
     private static final int DURATION_HOME_BUTTON = 300;
     private static final int DURATION_LAYOUT_TRANSITION = 100;
 

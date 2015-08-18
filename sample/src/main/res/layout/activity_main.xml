@@ -8,27 +8,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="64dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:orientation="vertical"
         android:gravity="center">
         <Button
             android:id="@+id/button_reveal_sample"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center"
             android:text="@string/text_menuitem_sample" />
 
         <Button
             android:id="@+id/button_search_sample"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center"
             android:text="@string/text_search_sample" />
 
         <Button
             android:id="@+id/button_github_repo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_github"
-            android:drawablePadding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center"
             android:text="@string/text_github_repo" />
     </LinearLayout>
 

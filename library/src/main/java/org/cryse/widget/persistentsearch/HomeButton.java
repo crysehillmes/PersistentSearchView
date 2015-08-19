@@ -2,14 +2,13 @@ package org.cryse.widget.persistentsearch;
 
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Build;
-import android.support.v7.app.SupportDrawerArrowDrawable;
+import android.support.v7.graphics.drawable.SupportDrawerArrowDrawable;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.widget.ImageView;
@@ -60,7 +59,7 @@ public class HomeButton extends ImageView {
     }
 
     private void init() {
-        mArrowDrawable = new SupportDrawerArrowDrawable((Activity)getContext(), getContext());
+        mArrowDrawable = new SupportDrawerArrowDrawable(getContext());
         ColorFilter colorFilter = new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
         mArrowDrawable.setColorFilter(colorFilter);
         this.setImageDrawable(mArrowDrawable);

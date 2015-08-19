@@ -6,6 +6,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.3.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -22,10 +24,10 @@ allprojects {
     ext.appVersionCode = 2
     ext.appVersionName = "1.0.0.1"
     ext.appMinSdkVersion = 14
-    ext.appTargetSdkVersion = 22
-    ext.appCompileSdkVersion = 22
-    ext.appBuildToolsVersion = '22.0.1'
+    ext.appTargetSdkVersion = 23
+    ext.appCompileSdkVersion = 23
+    ext.appBuildToolsVersion = '23'
 
 
-    ext.supportlibraryVersion = '22.2.1'
+    ext.supportlibraryVersion = '+'
 }

@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:paddingTop="64dp"
         android:elevation="2dp"
-        android:background="#000000"
+        android:background="#FFFFFF"
         android:visibility="gone"/>
 
     <android.support.v7.widget.Toolbar

@@ -47,7 +47,7 @@ public class PersistentSearchView extends RevealViewGroup {
     public static final int VOICE_RECOGNITION_CODE = 8185102;
 
     public enum DisplayMode {
-        MENUITEM(0), TOOLBAR(1), TOOLBAR_SEARCH(2);
+        MENUITEM(0), TOOLBAR_DRAWER(1), TOOLBAR_BACKARROW(2);
         int mode;
 
         DisplayMode(int mode) {
@@ -67,7 +67,7 @@ public class PersistentSearchView extends RevealViewGroup {
     }
 
     public enum SearchViewState {
-        TOOLBAR, MENUITEM, EDITING, SEARCH, TOOLBAR_SEARCH;
+        TOOLBAR_DRAWER, MENUITEM, EDITING, SEARCH, TOOLBAR_BACKARROW;
     }
 
     private static final int DURATION_REVEAL_OPEN = 400;
@@ -169,17 +169,17 @@ public class PersistentSearchView extends RevealViewGroup {
                 mHomeButtonOpenIconState = HomeButton.IconState.ARROW;
                 setCurrentState(SearchViewState.MENUITEM);
                 break;
-            case TOOLBAR:
+            case TOOLBAR_DRAWER:
                 mHomeButtonCloseIconState = HomeButton.IconState.BURGER;
                 mHomeButtonOpenIconState = HomeButton.IconState.ARROW;
                 mCardVisiblePadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_toolbar_mode);
-                setCurrentState(SearchViewState.TOOLBAR);
+                setCurrentState(SearchViewState.TOOLBAR_DRAWER);
                 break;
-            case TOOLBAR_SEARCH:
+            case TOOLBAR_BACKARROW:
                 mHomeButtonCloseIconState = HomeButton.IconState.ARROW;
                 mHomeButtonOpenIconState = HomeButton.IconState.ARROW;
                 mCardVisiblePadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_toolbar_mode);
-                setCurrentState(SearchViewState.TOOLBAR_SEARCH);
+                setCurrentState(SearchViewState.TOOLBAR_BACKARROW);
                 break;
         }
         mHomeButtonSearchIconState = HomeButton.IconState.ARROW;
@@ -227,7 +227,7 @@ public class PersistentSearchView extends RevealViewGroup {
             public void onClick(View v) {
                 if (mCurrentState == SearchViewState.EDITING) {
                     cancelEditing();
-                } else if (mCurrentState == SearchViewState.SEARCH && mDisplayMode == DisplayMode.TOOLBAR_SEARCH) {
+                } else if (mCurrentState == SearchViewState.SEARCH && mDisplayMode == DisplayMode.TOOLBAR_BACKARROW) {
                     if (mHomeButtonListener != null)
                         mHomeButtonListener.onHomeButtonClick();
                 } else if (mCurrentState == SearchViewState.SEARCH) {
@@ -243,7 +243,7 @@ public class PersistentSearchView extends RevealViewGroup {
 
             @Override
             public void onClick(View v) {
-                if (mCurrentState == SearchViewState.TOOLBAR) {
+                if (mCurrentState == SearchViewState.TOOLBAR_DRAWER) {
                     stateFromToolbarToEditing();
                 } else if (mCurrentState == SearchViewState.SEARCH) {
                     stateFromSearchToEditing();
@@ -806,16 +806,16 @@ public class PersistentSearchView extends RevealViewGroup {
     }
 
     private void stateFromEditingToNormal() {
-        if(mDisplayMode == DisplayMode.TOOLBAR) {
-            setCurrentState(SearchViewState.TOOLBAR);
+        if(mDisplayMode == DisplayMode.TOOLBAR_DRAWER) {
+            setCurrentState(SearchViewState.TOOLBAR_DRAWER);
             setSearchString("", false);
             closeSearchInternal();
         } else if(mDisplayMode == DisplayMode.MENUITEM) {
             setCurrentState(SearchViewState.MENUITEM);
             setSearchString("", false);
             hideCircularlyToMenuItem();
-        } else if(mDisplayMode == DisplayMode.TOOLBAR_SEARCH) {
-            setCurrentState(SearchViewState.TOOLBAR_SEARCH);
+        } else if(mDisplayMode == DisplayMode.TOOLBAR_BACKARROW) {
+            setCurrentState(SearchViewState.TOOLBAR_BACKARROW);
             setSearchString("", false);
             closeSearchInternal();
         }
@@ -837,14 +837,14 @@ public class PersistentSearchView extends RevealViewGroup {
     private void stateFromSearchToNormal() {
         setLogoTextInt("");
         setSearchString("", true);
-        if(mDisplayMode == DisplayMode.TOOLBAR) {
-            setCurrentState(SearchViewState.TOOLBAR);
+        if(mDisplayMode == DisplayMode.TOOLBAR_DRAWER) {
+            setCurrentState(SearchViewState.TOOLBAR_DRAWER);
             closeSearchInternal();
         } else if(mDisplayMode == DisplayMode.MENUITEM) {
             setCurrentState(SearchViewState.MENUITEM);
             hideCircularlyToMenuItem();
-        } else if(mDisplayMode == DisplayMode.TOOLBAR_SEARCH) {
-            setCurrentState(SearchViewState.TOOLBAR);
+        } else if(mDisplayMode == DisplayMode.TOOLBAR_BACKARROW) {
+            setCurrentState(SearchViewState.TOOLBAR_DRAWER);
             closeSearchInternal();
         }
         if(mSearchListener != null)
@@ -857,7 +857,7 @@ public class PersistentSearchView extends RevealViewGroup {
     }
 
     public void openSearch() {
-        if(mCurrentState == SearchViewState.TOOLBAR) {
+        if(mCurrentState == SearchViewState.TOOLBAR_DRAWER) {
             stateFromToolbarToEditing();
         } else if(mCurrentState == SearchViewState.MENUITEM) {
             stateFromMenuItemToEditing();

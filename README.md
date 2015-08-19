@@ -95,8 +95,8 @@ In Java, call `openSearch(View view)` to show SearchView, start position is dete
 ##Screenshot
 ##Thanks
 
-- The project originally came from  [Quinny898][PersistentSearch].
-- [Ozodrukh][CircularReveal] for reveal animation.
+- The project originally came from  [Quinny898/PersistentSearch](https://github.com/Quinny898/PersistentSearch).
+- [Ozodrukh/CircularReveal](https://github.com/ozodrukh/CircularReveal) for reveal animation.
 
 ##License
 

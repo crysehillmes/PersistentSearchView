@@ -16,19 +16,19 @@ A library that implements Google Play like PersistentSearch view.
 ## Custom Attributes
 ```xml
 <declare-styleable name="PersistentSearchView">
-        <attr name="persistentSV_searchTextColor" format="color"/>
-        <attr name="persistentSV_logoDrawable" format="reference"/>
-        <attr name="persistentSV_editTextColor" format="color"/>
-        <attr name="persistentSV_editHintText" format="string"/>
-        <attr name="persistentSV_editHintTextColor" format="color"/>
-        <attr name="persistentSV_searchCardElevation" format="dimension"/>
-        <attr name="persistentSV_displayMode" format="enum">
-            <enum name="displayAsMenuItem" value="0" />
-            <enum name="displayAsToolbarDrawer" value="1" />
-            <enum name="displayAsToolbarBackArrow" value="2" />
-        </attr>
-        <attr name="persistentSV_homeButtonColor" format="color"/>
-    </declare-styleable>
+	<attr name="persistentSV_searchTextColor" format="color"/>
+	<attr name="persistentSV_logoDrawable" format="reference"/>
+	<attr name="persistentSV_editTextColor" format="color"/>
+	<attr name="persistentSV_editHintText" format="string"/>
+	<attr name="persistentSV_editHintTextColor" format="color"/>
+	<attr name="persistentSV_searchCardElevation" format="dimension"/>
+	<attr name="persistentSV_displayMode" format="enum">
+		<enum name="displayAsMenuItem" value="0" />
+		<enum name="displayAsToolbarDrawer" value="1" />
+		<enum name="displayAsToolbarBackArrow" value="2" />
+	</attr>
+	<attr name="persistentSV_homeButtonColor" format="color"/>
+</declare-styleable>
 ```
 Note:
 `android:elevation` attribute only decide z-axis position of SearchView, but not draw any shadow, shadow size is decided by `app:persistentSV_searchCardElevation`.
@@ -38,18 +38,18 @@ Note:
 
 ```xml
 <org.cryse.widget.persistentsearch.PersistentSearchView
-        android:id="@+id/searchview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:elevation="4dp"
-        app:persistentSV_logoDrawable="@drawable/ic_logo"
-        app:persistentSV_searchTextColor="?android:textColorPrimary"
-        app:persistentSV_editTextColor="?android:textColorPrimary"
-        app:persistentSV_editHintText="Search"
-        app:persistentSV_editHintTextColor="?android:textColorHint"
-        app:persistentSV_displayMode="displayAsToolbarDrawer"
-        app:persistentSV_searchCardElevation="2dp"/>
+	android:id="@+id/searchview"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_alignParentTop="true"
+	android:elevation="4dp"
+	app:persistentSV_logoDrawable="@drawable/ic_logo"
+	app:persistentSV_searchTextColor="?android:textColorPrimary"
+	app:persistentSV_editTextColor="?android:textColorPrimary"
+	app:persistentSV_editHintText="Search"
+	app:persistentSV_editHintTextColor="?android:textColorHint"
+	app:persistentSV_displayMode="displayAsToolbarDrawer"
+	app:persistentSV_searchCardElevation="2dp"/>
 ```
 ### Display as Toolbar with BackArrow
 Change the attribute in layout file:
@@ -62,8 +62,8 @@ Change the attributes in layout file:
 
 When you need to show it, call `openSearch(View view)` to show SearchView, start position is determinate by `view` param, for example:
 ```java
-        View menuItemView = findViewById(R.id.action_search);
-        mSearchView.openSearch(menuItemView);
+	View menuItemView = findViewById(R.id.action_search);
+	mSearchView.openSearch(menuItemView);
 ```
 When you need to hide it, call `searchView.closeSearch()`
 ### Voice Recognition

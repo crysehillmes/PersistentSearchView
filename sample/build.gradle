@@ -33,7 +33,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':library')
+    compile project(':persistentsearchview')
     compile "com.android.support:appcompat-v7:$supportlibraryVersion"
     compile "com.android.support:recyclerview-v7:$supportlibraryVersion"
     compile "com.android.support:cardview-v7:$supportlibraryVersion"

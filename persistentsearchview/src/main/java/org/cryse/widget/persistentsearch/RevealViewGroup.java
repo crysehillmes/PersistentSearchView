@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import io.codetail.animation.RevealAnimator;
 import io.codetail.animation.SupportAnimator;

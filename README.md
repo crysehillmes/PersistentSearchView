@@ -2,7 +2,7 @@
 A library that implements PersistentSearch View in Google Play app.
 
 - API: 14+
-- 3 Modes: Toolbar with burger, MenuItem and SearchView
+- 3 Modes: Toolbar with drawer button, MenuItem and Toolbar with back button
 - MenuItem mode reveal animation (Using [ozodrukh/CircularReveal](https://github.com/ozodrukh/CircularReveal))
 - Use `android.support.v7.widget.CardView` to draw background and shadow, you can set `persistentSV_searchCardElevation` to modify shadow size.
 - Most metrics measured from Google Play Store app.

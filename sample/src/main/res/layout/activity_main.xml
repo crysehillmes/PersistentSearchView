@@ -14,19 +14,20 @@
         android:layout_marginRight="8dp"
         android:orientation="vertical"
         android:gravity="center">
-        <Button
-            android:id="@+id/button_reveal_sample"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:gravity="center"
-            android:text="@string/text_menuitem_sample" />
 
         <Button
             android:id="@+id/button_search_sample"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center"
-            android:text="@string/text_search_sample" />
+            android:text="@string/text_back_arrow_sample" />
+
+        <Button
+            android:id="@+id/button_reveal_sample"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center"
+            android:text="@string/text_menuitem_sample" />
 
         <Button
             android:id="@+id/button_github_repo"

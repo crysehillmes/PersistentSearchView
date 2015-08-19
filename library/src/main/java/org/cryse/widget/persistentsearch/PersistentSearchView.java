@@ -816,7 +816,7 @@ public class PersistentSearchView extends RevealViewGroup {
 
     public void closeSearch() {
         if(mCurrentState == SearchViewState.EDITING) {
-            stateFromSearchToNormal();
+            stateFromEditingToNormal();
         } else if(mCurrentState == SearchViewState.SEARCH) {
             stateFromSearchToNormal();
         }

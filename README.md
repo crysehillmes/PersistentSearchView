@@ -1,9 +1,10 @@
 #Persistent Search
-A library that implements PersistentSearch View in Google Play app.
+A library that implements Google Play like PersistentSearch view.
 
 - API: 14+
-- 3 Modes: Toolbar with drawer button, MenuItem and Toolbar with back button
+- 3 modes: Toolbar with drawer button, MenuItem and Toolbar with back button
 - MenuItem mode reveal animation (Using [ozodrukh/CircularReveal](https://github.com/ozodrukh/CircularReveal))
+- Voice recognition support.
 - Use `android.support.v7.widget.CardView` to draw background and shadow, you can set `persistentSV_searchCardElevation` to modify shadow size.
 - Most metrics measured from Google Play Store app.
 
@@ -50,48 +51,43 @@ Note:
         app:persistentSV_displayMode="displayAsToolbarDrawer"
         app:persistentSV_searchCardElevation="2dp"/>
 ```
+### Display as Toolbar with BackArrow
+Change the attribute in layout file:
+`app:persistentSV_displayMode="displayAsToolbarBackArrow"`
 
 ### Display as MenuItem
-`displayMode` should be `displayAsMenuItem`, and `android:visibility="gone"`
-```xml
-<org.cryse.widget.persistentsearch.PersistentSearchView
-        android:layout_width="match_parent"
-        android:id="@+id/searchview"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:elevation="6dp"
-        app:persistentSV_displayMode="displayAsMenuItem"
-        app:persistentSV_searchTextColor="#DE000000"
-        app:persistentSV_editTextColor="#DE000000"
-        app:persistentSV_editHintText="Search"
-        app:persistentSV_editHintTextColor="#61000000"
-        app:persistentSV_searchCardElevation="4dp"/>
-```
-In Java, call `openSearch(View view)` to show SearchView, start position is determinate by `view` param, for example:
+Change the attributes in layout file:
+`app:persistentSV_displayMode="displayAsMenuItem"`
+`android:visibility="gone"`
+
+When you need to show it, call `openSearch(View view)` to show SearchView, start position is determinate by `view` param, for example:
 ```java
         View menuItemView = findViewById(R.id.action_search);
         mSearchView.openSearch(menuItemView);
 ```
-### Display as Toolbar with BackArrow
-`displayMode` should be `displayAsToolbarBackArrow`
-```xml
-<org.cryse.widget.persistentsearch.PersistentSearchView
-        android:id="@+id/searchview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:elevation="4dp"
-        app:persistentSV_logoDrawable="@drawable/ic_logo"
-        app:persistentSV_searchTextColor="?android:textColorPrimary"
-        app:persistentSV_editTextColor="?android:textColorPrimary"
-        app:persistentSV_editHintText="Search"
-        app:persistentSV_editHintTextColor="?android:textColorHint"
-        app:persistentSV_displayMode="displayAsToolbarBackArrow"
-        app:persistentSV_searchCardElevation="2dp"/>
+When you need to hide it, call `searchView.closeSearch()`
+### Voice Recognition
+If you want use voice recognition, just check the availability and setup:
+```java 
+	VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);
+	if(delegate.isVoiceRecognitionAvailable()) {
+		mSearchView.setVoiceRecognitionDelegate(delegate);
+	}
+```
+then in onActivityResult():
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
+		ArrayList<String> matches = data
+			.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+		mSearchView.populateEditText(matches);  // Set result to PersistentSearchView
+	}
+	super.onActivityResult(requestCode, resultCode, data);
+}
 ```
 
+If you don't want to use default voice recognizer, you could inherit from abstract class VoiceRecognitionDelegate and implement your own recognizer.
 ##Screenshot
 ##Thanks
 

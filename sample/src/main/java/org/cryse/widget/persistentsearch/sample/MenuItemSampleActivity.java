@@ -16,15 +16,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.cryse.widget.persistentsearch.DefaultVoiceRecognizerDelegate;
 import org.cryse.widget.persistentsearch.PersistentSearchView;
 import org.cryse.widget.persistentsearch.PersistentSearchView.HomeButtonListener;
 import org.cryse.widget.persistentsearch.PersistentSearchView.SearchListener;
+import org.cryse.widget.persistentsearch.VoiceRecognitionDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuItemSampleActivity extends AppCompatActivity {
-
+	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1023;
 	private PersistentSearchView mSearchView;
 	private Toolbar mToolbar;
     private MenuItem mSearchMenuItem;
@@ -37,8 +39,11 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu_item_sample);
         mSearchView = (PersistentSearchView) findViewById(R.id.searchview);
-        mSearchView.enableVoiceRecognition(this);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);mSearchTintView = findViewById(R.id.view_search_tint);
+		VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);
+		if(delegate.isVoiceRecognitionAvailable()) {
+			mSearchView.setVoiceRecognitionDelegate(delegate);
+		}
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);mSearchTintView = findViewById(R.id.view_search_tint);
 		this.setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -173,19 +178,11 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1234 && resultCode == RESULT_OK) {
+		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
 			ArrayList<String> matches = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             mSearchView.populateEditText(matches);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-
-	protected void closeSearch() {
-		//mSearchView.closeSearch();
-        //mSearchView.hideCircularlyToMenuItem(R.id.action_search, this);
-		//if(mSearchView.getSearchText().isEmpty())
-			//mToolbar.setTitle(R.string.app_name);
-	}
-
 }

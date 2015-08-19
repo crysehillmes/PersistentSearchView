@@ -1,18 +1,12 @@
 package org.cryse.widget.persistentsearch;
 
 import android.animation.LayoutTransition;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.speech.RecognizerIntent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
@@ -37,7 +31,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
@@ -98,14 +91,10 @@ public class PersistentSearchView extends RevealViewGroup {
     private SearchListener mSearchListener;
     private HomeButtonListener mHomeButtonListener;
     private FrameLayout mRootLayout;
-    private VoiceRecognitionListener mVoiceRecognitionListener;
-    private Activity mContainerActivity;
-    private Fragment mContainerFragment;
-    private android.support.v4.app.Fragment mContainerSupportFragment;
+    private VoiceRecognitionDelegate mVoiceRecognitionDelegate;
 
 
     private boolean mAvoidTriggerTextWatcher;
-    private boolean mIsVoiceRecognitionIntentSupported;
     private boolean mIsMic;
     private int mSearchTextColor;
     private int mArrorButtonColor;
@@ -130,15 +119,6 @@ public class PersistentSearchView extends RevealViewGroup {
     public PersistentSearchView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs);
-    }
-
-    private static boolean isIntentAvailable(Context context, Intent intent) {
-        PackageManager mgr = context.getPackageManager();
-        if (mgr != null) {
-            List<ResolveInfo> list = mgr.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-            return list.size() > 0;
-        }
-        return false;
     }
 
     private void init(AttributeSet attrs) {
@@ -191,7 +171,6 @@ public class PersistentSearchView extends RevealViewGroup {
         mSearchSuggestions = new ArrayList<>();
         mSearchItemAdapter = new SearchItemAdapter(getContext(), mSearchSuggestions);
         mSuggestionListView.setAdapter(mSearchItemAdapter);
-        mIsVoiceRecognitionIntentSupported = isIntentAvailable(getContext(), new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
 
         setUpLayoutTransition();
         setUpListeners();
@@ -276,11 +255,7 @@ public class PersistentSearchView extends RevealViewGroup {
         mMicButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mVoiceRecognitionListener != null) {
-                    mVoiceRecognitionListener.onClick();
-                } else {
-                    micClick();
-                }
+                micClick();
             }
         });
         mSearchEditText.addTextChangedListener(new TextWatcher() {
@@ -479,55 +454,8 @@ public class PersistentSearchView extends RevealViewGroup {
         this.mSuggestionListView.setVisibility(View.GONE);
     }
 
-    /***
-     * Start the voice input activity manually
-     */
-    public void startVoiceRecognition() {
-        if (isMicEnabled()) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                    getContext().getString(R.string.speak_now));
-            if (mContainerActivity != null) {
-                mContainerActivity.startActivityForResult(intent, VOICE_RECOGNITION_CODE);
-            } else if (mContainerFragment != null) {
-                mContainerFragment.startActivityForResult(intent, VOICE_RECOGNITION_CODE);
-            } else if (mContainerSupportFragment != null) {
-                mContainerSupportFragment.startActivityForResult(intent, VOICE_RECOGNITION_CODE);
-            }
-        }
-    }
-
-    /***
-     * Enable voice recognition for Activity
-     * @param context Context
-     */
-    public void enableVoiceRecognition(Activity context) {
-        mContainerActivity = context;
-        micStateChanged();
-    }
-
-    /***
-     * Enable voice recognition for Fragment
-     * @param context Fragment
-     */
-    public void enableVoiceRecognition(Fragment context) {
-        mContainerFragment = context;
-        micStateChanged();
-    }
-
-    /***
-     * Enable voice recognition for Support Fragment
-     * @param context Fragment
-     */
-    public void enableVoiceRecognition(android.support.v4.app.Fragment context) {
-        mContainerSupportFragment = context;
-        micStateChanged();
-    }
-
     private boolean isMicEnabled() {
-        return mIsVoiceRecognitionIntentSupported && (mContainerActivity != null || mContainerSupportFragment != null || mContainerFragment != null);
+        return mVoiceRecognitionDelegate != null;
     }
 
     private void micStateChanged() {
@@ -546,9 +474,9 @@ public class PersistentSearchView extends RevealViewGroup {
         if (!mIsMic) {
             setSearchString("", false);
         } else {
-            startVoiceRecognition();
+            if(mVoiceRecognitionDelegate != null)
+                mVoiceRecognitionDelegate.onStartVoiceRecognition();
         }
-
     }
 
     /***
@@ -901,6 +829,11 @@ public class PersistentSearchView extends RevealViewGroup {
             stateFromEditingToNormal();
     }
 
+    public void setVoiceRecognitionDelegate(VoiceRecognitionDelegate delegate) {
+        this.mVoiceRecognitionDelegate = delegate;
+        micStateChanged();
+    }
+
     public interface SearchListener {
 
         /**
@@ -940,12 +873,5 @@ public class PersistentSearchView extends RevealViewGroup {
          * Called when the menu button is pressed
          */
         void onHomeButtonClick();
-    }
-
-    public interface VoiceRecognitionListener {
-        /**
-         * Called when the menu button is pressed
-         */
-        void onClick();
     }
 }

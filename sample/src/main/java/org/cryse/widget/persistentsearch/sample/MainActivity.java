@@ -13,14 +13,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.cryse.widget.persistentsearch.DefaultVoiceRecognizerDelegate;
 import org.cryse.widget.persistentsearch.PersistentSearchView;
 import org.cryse.widget.persistentsearch.PersistentSearchView.HomeButtonListener;
 import org.cryse.widget.persistentsearch.PersistentSearchView.SearchListener;
+import org.cryse.widget.persistentsearch.VoiceRecognitionDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity {
+    private static final int VOICE_RECOGNITION_REQUEST_CODE = 1023;
 	private PersistentSearchView mSearchView;
     private Button mMenuItemSampleButton;
     private Button mSearchSampleButton;
@@ -62,8 +65,11 @@ public class MainActivity extends Activity {
                 startActivity(i);
             }
         });
-		mSearchView.enableVoiceRecognition(this);
-		mSearchView.setHomeButtonListener(new HomeButtonListener() {
+        VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);
+		if(delegate.isVoiceRecognitionAvailable()) {
+            mSearchView.setVoiceRecognitionDelegate(delegate);
+        }
+        mSearchView.setHomeButtonListener(new HomeButtonListener() {
 
             @Override
             public void onHomeButtonClick() {
@@ -139,7 +145,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1234 && resultCode == RESULT_OK) {
+		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
 			ArrayList<String> matches = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			mSearchView.populateEditText(matches);

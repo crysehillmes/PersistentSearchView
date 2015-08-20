@@ -43,7 +43,8 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 		if(delegate.isVoiceRecognitionAvailable()) {
 			mSearchView.setVoiceRecognitionDelegate(delegate);
 		}
-		mToolbar = (Toolbar) findViewById(R.id.toolbar);mSearchTintView = findViewById(R.id.view_search_tint);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		mSearchTintView = findViewById(R.id.view_search_tint);
 		this.setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

@@ -41,7 +41,7 @@ public class SearchActivity extends Activity {
         if(delegate.isVoiceRecognitionAvailable()) {
             mSearchView.setVoiceRecognitionDelegate(delegate);
         }
-        mSearchView.openSearch("Text Query");
+        // mSearchView.openSearch("Text Query");
 		mSearchView.setHomeButtonListener(new HomeButtonListener() {
 
             @Override

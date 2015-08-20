@@ -214,6 +214,8 @@ public class PersistentSearchView extends RevealViewGroup {
             public void onClick(View v) {
                 if (mCurrentState == SearchViewState.TOOLBAR_DRAWER) {
                     stateFromToolbarToEditing();
+                } else if (mCurrentState == SearchViewState.TOOLBAR_BACKARROW) {
+                    stateFromToolbarToEditing();
                 } else if (mCurrentState == SearchViewState.SEARCH) {
                     stateFromSearchToEditing();
                 }

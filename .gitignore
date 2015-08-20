@@ -47,3 +47,4 @@ proguard/
 # SigningConfig
 signing.properties
 *.keystore
+javadoc/

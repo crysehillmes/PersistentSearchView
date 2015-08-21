@@ -249,6 +249,8 @@ public class PersistentSearchView extends RevealViewGroup {
                     stateFromToolbarToEditing();
                 } else if (mCurrentState == SearchViewState.SEARCH) {
                     stateFromSearchToEditing();
+                } else {
+                    stateToEditing(); // This would call when state is wrong.
                 }
             }
 
@@ -756,6 +758,11 @@ public class PersistentSearchView extends RevealViewGroup {
     }
 
     private void stateFromSearchToEditing() {
+        openSearchInternal(true);
+        setCurrentState(SearchViewState.EDITING);
+    }
+
+    private void stateToEditing() {
         openSearchInternal(true);
         setCurrentState(SearchViewState.EDITING);
     }

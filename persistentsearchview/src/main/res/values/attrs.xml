@@ -13,5 +13,6 @@
             <enum name="displayAsToolbarBackArrow" value="2" />
         </attr>
         <attr name="persistentSV_homeButtonColor" format="color"/>
+        <attr name="persistentSV_customToolbarHeight" format="dimension"/>
     </declare-styleable>
 </resources>

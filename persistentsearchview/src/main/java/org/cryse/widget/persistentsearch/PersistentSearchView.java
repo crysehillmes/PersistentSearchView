@@ -39,6 +39,7 @@ import io.codetail.animation.ViewAnimationUtils;
 public class PersistentSearchView extends RevealViewGroup {
     public static final int VOICE_RECOGNITION_CODE = 8185102;
     final static double COS_45 = Math.cos(Math.toRadians(45));
+    private static final int[] RES_IDS_ACTION_BAR_SIZE = { R.attr.actionBarSize };
     private static final int DURATION_REVEAL_OPEN = 400;
     private static final int DURATION_REVEAL_CLOSE = 300;
     private static final int DURATION_HOME_BUTTON = 300;
@@ -49,7 +50,10 @@ public class PersistentSearchView extends RevealViewGroup {
     private SearchViewState mCurrentState;
     private SearchViewState mLastState;
     private DisplayMode mDisplayMode;
-    private int mCardVisiblePadding;
+    private int mCardVerticalPadding;
+    private int mCardHorizontalPadding;
+    private int mCardHeight;
+    private int mCustomToolbarHeight;
     private int mSearchCardElevation;
     private int mFromX, mFromY;
     // Views
@@ -111,30 +115,57 @@ public class PersistentSearchView extends RevealViewGroup {
         }
     }
 
+    /** Calculates the Toolbar height in pixels. */
+    static int calculateToolbarSize(Context context) {
+        if (context == null) {
+            return 0;
+        }
+
+        Resources.Theme curTheme = context.getTheme();
+        if (curTheme == null) {
+            return 0;
+        }
+
+        TypedArray att = curTheme.obtainStyledAttributes(RES_IDS_ACTION_BAR_SIZE);
+        if (att == null) {
+            return 0;
+        }
+
+        float size = att.getDimension(0, 0);
+        att.recycle();
+        return (int)size;
+    }
+
     private void init(AttributeSet attrs) {
         LayoutInflater.from(getContext()).inflate(R.layout.layout_searchview, this, true);
         if (attrs != null) {
-            TypedArray attributesValue = getContext().obtainStyledAttributes(attrs,
+            TypedArray attrsValue = getContext().obtainStyledAttributes(attrs,
                     R.styleable.PersistentSearchView);
-            mDisplayMode = DisplayMode.fromInt(attributesValue.getInt(R.styleable.PersistentSearchView_persistentSV_displayMode, DisplayMode.MENUITEM.toInt()));
-            mSearchCardElevation = attributesValue.getDimensionPixelSize(R.styleable.PersistentSearchView_persistentSV_searchCardElevation, -1);
-            mSearchTextColor = attributesValue.getColor(R.styleable.PersistentSearchView_persistentSV_searchTextColor, Color.BLACK);
-            mLogoDrawable = attributesValue.getDrawable(R.styleable.PersistentSearchView_persistentSV_logoDrawable);
-            mSearchEditTextColor = attributesValue.getColor(R.styleable.PersistentSearchView_persistentSV_editTextColor, Color.BLACK);
-            mSearchEditTextHint = attributesValue.getString(R.styleable.PersistentSearchView_persistentSV_editHintText);
-            mSearchEditTextHintColor = attributesValue.getColor(R.styleable.PersistentSearchView_persistentSV_editHintTextColor, Color.BLACK);
-            mArrorButtonColor = attributesValue.getColor(R.styleable.PersistentSearchView_persistentSV_homeButtonColor, Color.BLACK);
-            attributesValue.recycle();
+            mDisplayMode = DisplayMode.fromInt(attrsValue.getInt(R.styleable.PersistentSearchView_persistentSV_displayMode, DisplayMode.MENUITEM.toInt()));
+            mSearchCardElevation = attrsValue.getDimensionPixelSize(R.styleable.PersistentSearchView_persistentSV_searchCardElevation, -1);
+            mSearchTextColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_searchTextColor, Color.BLACK);
+            mLogoDrawable = attrsValue.getDrawable(R.styleable.PersistentSearchView_persistentSV_logoDrawable);
+            mSearchEditTextColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_editTextColor, Color.BLACK);
+            mSearchEditTextHint = attrsValue.getString(R.styleable.PersistentSearchView_persistentSV_editHintText);
+            mSearchEditTextHintColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_editHintTextColor, Color.BLACK);
+            mArrorButtonColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_homeButtonColor, Color.BLACK);
+            mCustomToolbarHeight = attrsValue.getDimensionPixelSize(R.styleable.PersistentSearchView_persistentSV_customToolbarHeight, calculateToolbarSize(getContext()));
+            attrsValue.recycle();
         }
 
         if (mSearchCardElevation < 0) {
             mSearchCardElevation = getContext().getResources().getDimensionPixelSize(R.dimen.search_card_default_card_elevation);
         }
 
+        mCardHeight = getResources().getDimensionPixelSize(R.dimen.search_card_height);
+        mCardVerticalPadding = (mCustomToolbarHeight - mCardHeight) / 2;
+
         switch (mDisplayMode) {
             case MENUITEM:
             default:
-                mCardVisiblePadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_menu_item_mode);
+                mCardHorizontalPadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_menu_item_mode);
+                if(mCardVerticalPadding > mCardHorizontalPadding)
+                    mCardHorizontalPadding = mCardVerticalPadding;
                 mHomeButtonCloseIconState = HomeButton.IconState.ARROW;
                 mHomeButtonOpenIconState = HomeButton.IconState.ARROW;
                 setCurrentState(SearchViewState.MENUITEM);
@@ -142,13 +173,13 @@ public class PersistentSearchView extends RevealViewGroup {
             case TOOLBAR_DRAWER:
                 mHomeButtonCloseIconState = HomeButton.IconState.BURGER;
                 mHomeButtonOpenIconState = HomeButton.IconState.ARROW;
-                mCardVisiblePadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_toolbar_mode);
+                mCardHorizontalPadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_toolbar_mode);
                 setCurrentState(SearchViewState.TOOLBAR_DRAWER);
                 break;
             case TOOLBAR_BACKARROW:
                 mHomeButtonCloseIconState = HomeButton.IconState.ARROW;
                 mHomeButtonOpenIconState = HomeButton.IconState.ARROW;
-                mCardVisiblePadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_toolbar_mode);
+                mCardHorizontalPadding = getResources().getDimensionPixelSize(R.dimen.search_card_visible_padding_toolbar_mode);
                 setCurrentState(SearchViewState.TOOLBAR_BACKARROW);
                 break;
         }
@@ -319,7 +350,7 @@ public class PersistentSearchView extends RevealViewGroup {
                     int horizontalPadding = (int) Math.ceil(calculateHorizontalPadding(searchCard));
                     int verticalPadding = (int) Math.ceil(calculateVerticalPadding(searchCard));
                     // searchCardWidth = widthSize - 2 * mCardVisiblePadding + horizontalPadding * 2;
-                    int searchCardLeft = mCardVisiblePadding - horizontalPadding;
+                    int searchCardLeft = mCardHorizontalPadding - horizontalPadding;
                     // searchCardTop = mCardVisiblePadding - verticalPadding;
                     searchCardWidth = widthSize - searchCardLeft * 2;
                     int cardWidthSpec = MeasureSpec.makeMeasureSpec(searchCardWidth, MeasureSpec.EXACTLY);
@@ -328,7 +359,7 @@ public class PersistentSearchView extends RevealViewGroup {
                     int childMeasuredHeight = child.getMeasuredHeight();
                     int childMeasuredWidth = child.getMeasuredWidth();
                     int childHeight = childMeasuredHeight - verticalPadding * 2;
-                    totalHeight = totalHeight + childHeight + mCardVisiblePadding * 2;
+                    totalHeight = totalHeight + childHeight + mCardVerticalPadding * 2;
                 }
             }
         }
@@ -352,8 +383,8 @@ public class PersistentSearchView extends RevealViewGroup {
                 CardView searchCard = (CardView) child;
                 int horizontalPadding = (int) Math.ceil(calculateHorizontalPadding(searchCard));
                 int verticalPadding = (int) Math.ceil(calculateVerticalPadding(searchCard));
-                searchCardLeft = mCardVisiblePadding - horizontalPadding;
-                searchCardTop = mCardVisiblePadding - verticalPadding;
+                searchCardLeft = mCardHorizontalPadding - horizontalPadding;
+                searchCardTop = mCardVerticalPadding - verticalPadding;
                 searchCardWidth = searchViewWidth - searchCardLeft * 2;
                 searchCardHeight = child.getMeasuredHeight();
                 searchCardRight = searchCardLeft + searchCardWidth;

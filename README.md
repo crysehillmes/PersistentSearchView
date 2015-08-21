@@ -6,15 +6,16 @@ A library that implements Google Play like PersistentSearch view.
 - MenuItem mode reveal animation (Using [ozodrukh/CircularReveal](https://github.com/ozodrukh/CircularReveal))
 - Voice recognition support.
 - Use `android.support.v7.widget.CardView` to draw background and shadow, you can set `persistentSV_searchCardElevation` to modify shadow size.
-- Most metrics measured from Google Play Store app.
 
 ## Demo
+
 <a href="https://play.google.com/store/apps/details?id=org.cryse.widget.persistentsearch.sample">
   <img alt="Get it on Google Play"
        src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
 </a>
 
 ## Custom Attributes
+
 ```xml
 <declare-styleable name="PersistentSearchView">
 	<attr name="persistentSV_searchTextColor" format="color"/>
@@ -29,13 +30,24 @@ A library that implements Google Play like PersistentSearch view.
 		<enum name="displayAsToolbarBackArrow" value="2" />
 	</attr>
 	<attr name="persistentSV_homeButtonColor" format="color"/>
+	<attr name="persistentSV_customToolbarHeight" format="dimension"/>
 </declare-styleable>
 ```
-Note:
-`android:elevation` attribute only decide z-axis position of SearchView, but not draw any shadow, shadow size is decided by `app:persistentSV_searchCardElevation`.
 
+Note:
+
+- CardView content height is 48dp
+- `android:elevation` attribute only decide z-axis position of SearchView, but not draw any shadow, shadow size is decided by `app:persistentSV_searchCardElevation`.
+- the CardView vertical padding equals (actionBarSize - cardViewHeight) / 2
+- the CardView horizontal padding have two values:
+	- Toolbar mode: 8dp
+	- MenuItem mode: 4dp
+	
+	you can change `persistentSV_customToolbarHeight` to change vertical padding (for example, 64dp height will get `(64 - 48) / 2 = 8dp` vertical padding).
+	
 ## Sample Usages
 ### Display as Toolbar with drawer button
+
 `displayMode` should be `displayAsToolbarDrawer`
 
 ```xml
@@ -55,11 +67,13 @@ Note:
 ```
 
 ### Display as Toolbar with BackArrow
+
 Change the attribute in layout file:
 
 `app:persistentSV_displayMode="displayAsToolbarBackArrow"`
 
 ### Display as MenuItem
+
 Change the attributes in layout file:
 
 `app:persistentSV_displayMode="displayAsMenuItem"`
@@ -72,7 +86,9 @@ When you need to show it, call `openSearch(View view)` to show SearchView, start
 	mSearchView.openSearch(menuItemView);
 ```
 When you need to hide it, call `searchView.closeSearch()`
+
 ### Voice Recognition
+
 If you want use voice recognition, just check the availability and setup:
 ```java 
 	VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);

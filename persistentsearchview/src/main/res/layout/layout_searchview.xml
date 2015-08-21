@@ -62,7 +62,7 @@
                 android:gravity="start|center"
                 android:background="@null"
                 android:ems="10"
-                android:imeOptions="actionSearch"
+                android:imeOptions="actionSearch|flagNoExtractUi"
                 android:singleLine="true"
                 android:textColor="#212121"
                 android:visibility="gone">

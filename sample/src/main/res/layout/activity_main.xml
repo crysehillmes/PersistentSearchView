@@ -66,5 +66,6 @@
         app:persistentSV_editHintText="Search"
         app:persistentSV_editHintTextColor="?android:textColorHint"
         app:persistentSV_displayMode="displayAsToolbarDrawer"
-        app:persistentSV_searchCardElevation="2dp"/>
+        app:persistentSV_searchCardElevation="2dp"
+        app:persistentSV_customToolbarHeight="64dp"/>
 </RelativeLayout>

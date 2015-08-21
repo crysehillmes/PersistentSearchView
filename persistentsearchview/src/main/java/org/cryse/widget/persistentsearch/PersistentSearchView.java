@@ -365,6 +365,8 @@ public class PersistentSearchView extends RevealViewGroup {
                 }
             }
         }
+        if(totalHeight < mCustomToolbarHeight)
+            totalHeight = mCustomToolbarHeight;
         setMeasuredDimension(widthSize, totalHeight);
     }
 

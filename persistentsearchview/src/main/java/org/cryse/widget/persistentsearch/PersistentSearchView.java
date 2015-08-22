@@ -256,7 +256,7 @@ public class PersistentSearchView extends RevealViewGroup {
                                           KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     clearSuggestions();
-                    fromEditingToSearch();
+                    fromEditingToSearch(true);
                     return true;
                 }
                 return false;
@@ -266,7 +266,7 @@ public class PersistentSearchView extends RevealViewGroup {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     clearSuggestions();
-                    fromEditingToSearch();
+                    fromEditingToSearch(true);
                     return true;
                 }
                 return false;
@@ -788,6 +788,7 @@ public class PersistentSearchView extends RevealViewGroup {
         } else if(mDisplayMode == DisplayMode.MENUITEM) {
             hideCircularlyToMenuItem();
         }
+        setLogoTextInt("");
         if (mSearchListener != null)
             mSearchListener.onSearchExit();
         mHomeButton.animateState(mHomeButtonCloseIconState);
@@ -808,20 +809,27 @@ public class PersistentSearchView extends RevealViewGroup {
             setSearchString("", false);
             hideCircularlyToMenuItem();
         }
+        setLogoTextInt("");
         if (mSearchListener != null)
             mSearchListener.onSearchExit();
         mHomeButton.animateState(mHomeButtonCloseIconState);
     }
 
     private void fromEditingToSearch() {
-        if(TextUtils.isEmpty(getSearchText()))
+        fromEditingToSearch(false);
+    }
+
+    private void fromEditingToSearch(boolean forceSearch) {
+        if(TextUtils.isEmpty(getSearchText())) {
             fromEditingToNormal();
-        setCurrentState(SearchViewState.SEARCH);
-        if(!getSearchText().equals(mLogoView.getText())) {
-            search();
+        } else {
+            setCurrentState(SearchViewState.SEARCH);
+            if(!getSearchText().equals(mLogoView.getText()) || forceSearch) {
+                search();
+            }
+            closeSearchInternal();
+            mHomeButton.animateState(mHomeButtonSearchIconState);
         }
-        closeSearchInternal();
-        mHomeButton.animateState(mHomeButtonSearchIconState);
     }
 
     private void dispatchStateChange(SearchViewState targetState) {

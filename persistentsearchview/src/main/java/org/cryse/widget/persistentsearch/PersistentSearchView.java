@@ -817,7 +817,9 @@ public class PersistentSearchView extends RevealViewGroup {
         if(TextUtils.isEmpty(getSearchText()))
             fromEditingToNormal();
         setCurrentState(SearchViewState.SEARCH);
-        search();
+        if(!getSearchText().equals(mLogoView.getText())) {
+            search();
+        }
         closeSearchInternal();
         mHomeButton.animateState(mHomeButtonSearchIconState);
     }

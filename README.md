@@ -18,19 +18,22 @@ A library that implements Google Play like PersistentSearch view.
 
 ```xml
 <declare-styleable name="PersistentSearchView">
-	<attr name="persistentSV_searchTextColor" format="color"/>
+	 <attr name="persistentSV_searchTextColor" format="color"/>
 	<attr name="persistentSV_logoDrawable" format="reference"/>
 	<attr name="persistentSV_editTextColor" format="color"/>
 	<attr name="persistentSV_editHintText" format="string"/>
 	<attr name="persistentSV_editHintTextColor" format="color"/>
 	<attr name="persistentSV_searchCardElevation" format="dimension"/>
 	<attr name="persistentSV_displayMode" format="enum">
-		<enum name="displayAsMenuItem" value="0" />
-		<enum name="displayAsToolbarDrawer" value="1" />
-		<enum name="displayAsToolbarBackArrow" value="2" />
+		<enum name="menuItem" value="0" />
+		<enum name="toolbar" value="1" />
 	</attr>
 	<attr name="persistentSV_homeButtonColor" format="color"/>
 	<attr name="persistentSV_customToolbarHeight" format="dimension"/>
+	<attr name="persistentSV_homeButtonMode" format="enum">
+		<enum name="arrow" value="0" />
+		<enum name="burger" value="1" />
+	</attr>
 </declare-styleable>
 ```
 
@@ -46,9 +49,10 @@ Note:
 	you can change `persistentSV_customToolbarHeight` to change vertical padding (for example, 64dp height will get `(64 - 48) / 2 = 8dp` vertical padding).
 	
 ## Sample Usages
-### Display as Toolbar with drawer button
+### Display as Toolbar with drawer(burger) button
 
-`displayMode` should be `displayAsToolbarDrawer`
+`app:persistentSV_displayMode="toolbar"`
+`app:persistentSV_homeButtonMode="burger"`
 
 ```xml
 <org.cryse.widget.persistentsearch.PersistentSearchView
@@ -62,28 +66,30 @@ Note:
 	app:persistentSV_editTextColor="?android:textColorPrimary"
 	app:persistentSV_editHintText="Search"
 	app:persistentSV_editHintTextColor="?android:textColorHint"
-	app:persistentSV_displayMode="displayAsToolbarDrawer"
-	app:persistentSV_searchCardElevation="2dp"/>
+	app:persistentSV_displayMode="toolbar"
+	app:persistentSV_homeButtonMode="burger"
+	app:persistentSV_searchCardElevation="2dp"
+	app:persistentSV_customToolbarHeight="64dp"/>
 ```
 
-### Display as Toolbar with BackArrow
+### Display as Toolbar with back arrow
 
 Change the attribute in layout file:
 
-`app:persistentSV_displayMode="displayAsToolbarBackArrow"`
+`app:persistentSV_displayMode="toolbar"`
+`app:persistentSV_homeButtonMode="arrow"`
 
 ### Display as MenuItem
 
 Change the attributes in layout file:
 
-`app:persistentSV_displayMode="displayAsMenuItem"`
-
 `android:visibility="gone"`
+`app:persistentSV_displayMode="menuItem"`
 
 When you need to show it, call `openSearch(View view)` to show SearchView, start position is determinate by `view` param, for example:
 ```java
-	View menuItemView = findViewById(R.id.action_search);
-	mSearchView.openSearch(menuItemView);
+View menuItemView = findViewById(R.id.action_search);
+mSearchView.openSearch(menuItemView);
 ```
 When you need to hide it, call `searchView.closeSearch()`
 
@@ -91,10 +97,10 @@ When you need to hide it, call `searchView.closeSearch()`
 
 If you want use voice recognition, just check the availability and setup:
 ```java 
-	VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);
-	if(delegate.isVoiceRecognitionAvailable()) {
-		mSearchView.setVoiceRecognitionDelegate(delegate);
-	}
+VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);
+if(delegate.isVoiceRecognitionAvailable()) {
+	mSearchView.setVoiceRecognitionDelegate(delegate);
+}
 ```
 then in onActivityResult():
 ```java

@@ -38,7 +38,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:elevation="6dp"
-        app:persistentSV_displayMode="displayAsMenuItem"
+        app:persistentSV_displayMode="menuItem"
         app:persistentSV_searchTextColor="#DE000000"
         app:persistentSV_editTextColor="#DE000000"
         app:persistentSV_editHintText="Search"

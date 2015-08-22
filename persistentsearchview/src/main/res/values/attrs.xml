@@ -8,11 +8,14 @@
         <attr name="persistentSV_editHintTextColor" format="color"/>
         <attr name="persistentSV_searchCardElevation" format="dimension"/>
         <attr name="persistentSV_displayMode" format="enum">
-            <enum name="displayAsMenuItem" value="0" />
-            <enum name="displayAsToolbarDrawer" value="1" />
-            <enum name="displayAsToolbarBackArrow" value="2" />
+            <enum name="menuItem" value="0" />
+            <enum name="toolbar" value="1" />
         </attr>
         <attr name="persistentSV_homeButtonColor" format="color"/>
         <attr name="persistentSV_customToolbarHeight" format="dimension"/>
+        <attr name="persistentSV_homeButtonMode" format="enum">
+            <enum name="arrow" value="0" />
+            <enum name="burger" value="1" />
+        </attr>
     </declare-styleable>
 </resources>

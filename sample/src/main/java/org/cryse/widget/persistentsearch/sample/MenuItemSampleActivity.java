@@ -80,8 +80,9 @@ public class MenuItemSampleActivity extends AppCompatActivity {
     }
 
     public void openSearch() {
-        View menuItemView = findViewById(R.id.action_search);
-        mSearchView.openSearch(menuItemView);
+		View menuItemView = findViewById(R.id.action_search);
+		mSearchView.setStartPositionFromMenuItem(menuItemView);
+        mSearchView.openSearch();
     }
 
     public void setUpSearchView() {
@@ -156,7 +157,6 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 				Toast.makeText(MenuItemSampleActivity.this, string +" Searched", Toast.LENGTH_LONG).show();
 				mRecyclerView.setVisibility(View.VISIBLE);
 				fillResultToRecyclerView(string);
-
 			}
 
 			@Override

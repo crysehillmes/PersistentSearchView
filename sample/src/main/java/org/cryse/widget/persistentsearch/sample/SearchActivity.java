@@ -60,22 +60,22 @@ public class SearchActivity extends Activity {
         mSearchView.setSuggestionBuilder(new SampleSuggestionsBuilder(this));
 		mSearchView.setSearchListener(new SearchListener() {
 
-			@Override
-			public void onSearchEditOpened() {
-				//Use this to tint the screen
-				mSearchTintView.setVisibility(View.VISIBLE);
-				mSearchTintView
+            @Override
+            public void onSearchEditOpened() {
+                //Use this to tint the screen
+                mSearchTintView.setVisibility(View.VISIBLE);
+                mSearchTintView
                         .animate()
                         .alpha(1.0f)
                         .setDuration(300)
                         .setListener(new SimpleAnimationListener())
                         .start();
-			}
+            }
 
-			@Override
-			public void onSearchEditClosed() {
-				//Use this to un-tint the screen
-				mSearchTintView
+            @Override
+            public void onSearchEditClosed() {
+                //Use this to un-tint the screen
+                mSearchTintView
                         .animate()
                         .alpha(0.0f)
                         .setDuration(300)
@@ -87,34 +87,35 @@ public class SearchActivity extends Activity {
                             }
                         })
                         .start();
-			}
+            }
 
             @Override
             public void onSearchExit() {
                 mResultAdapter.clear();
-                if(mRecyclerView.getVisibility() == View.VISIBLE) {
+                if (mRecyclerView.getVisibility() == View.VISIBLE) {
                     mRecyclerView.setVisibility(View.GONE);
                 }
             }
 
             @Override
-			public void onSearchTermChanged(String term) {
+            public void onSearchTermChanged(String term) {
 
-			}
+            }
 
-			@Override
-			public void onSearch(String string) {
-				Toast.makeText(SearchActivity.this, string +" Searched", Toast.LENGTH_LONG).show();
+            @Override
+            public void onSearch(String string) {
+                Toast.makeText(SearchActivity.this, string + " Searched", Toast.LENGTH_LONG).show();
                 mRecyclerView.setVisibility(View.VISIBLE);
                 fillResultToRecyclerView(string);
-			}
+            }
 
-			@Override
-			public void onSearchCleared() {
-				//Called when the clear button is clicked
-			}
-			
-		});
+            @Override
+            public void onSearchCleared() {
+                //Called when the clear button is clicked
+            }
+
+        });
+        mSearchView.openSearch("John von Neumann");
 	}
 
 	@Override

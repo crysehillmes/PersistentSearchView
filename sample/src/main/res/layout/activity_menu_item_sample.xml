@@ -28,7 +28,8 @@
         android:elevation="6dp"
         android:visibility="gone"
         android:background="#88000000"
-        android:alpha="0.0"/>
+        android:alpha="0.0"
+        android:layerType="hardware"/>
 
     <org.cryse.widget.persistentsearch.PersistentSearchView
         android:layout_width="match_parent"

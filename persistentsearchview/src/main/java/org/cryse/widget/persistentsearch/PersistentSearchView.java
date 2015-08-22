@@ -608,8 +608,17 @@ public class PersistentSearchView extends RevealViewGroup {
         Resources r = getResources();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 96,
                 r.getDisplayMetrics());
-        if(desireRevealWidth < 0)
+        if(desireRevealWidth <= 0)
             desireRevealWidth = getMeasuredWidth();
+        if(desireRevealWidth <= 0) {
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            desireRevealWidth = metrics.widthPixels;
+        }
+        if(x <= 0 )
+            x = desireRevealWidth - mCardHeight / 2;
+        if(y <= 0)
+            y = mCardHeight / 2;
+
         int measuredHeight = getMeasuredWidth();
         int finalRadius = (int) Math.max(Math.max(measuredHeight, px), desireRevealWidth);
 

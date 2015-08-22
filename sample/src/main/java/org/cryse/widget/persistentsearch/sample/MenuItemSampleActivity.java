@@ -118,7 +118,7 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 						.animate()
 						.alpha(1.0f)
 						.setDuration(300)
-                        .setListener(new SimpleAnimationListener())
+						.setListener(new SimpleAnimationListener())
 						.start();
 
 			}
@@ -126,23 +126,23 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 			@Override
 			public void onSearchEditClosed() {
 				mSearchTintView
-					.animate()
-					.alpha(0.0f)
-					.setDuration(300)
-					.setListener(new SimpleAnimationListener() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							super.onAnimationEnd(animation);
-							mSearchTintView.setVisibility(View.GONE);
-						}
-					})
-					.start();
+						.animate()
+						.alpha(0.0f)
+						.setDuration(300)
+						.setListener(new SimpleAnimationListener() {
+							@Override
+							public void onAnimationEnd(Animator animation) {
+								super.onAnimationEnd(animation);
+								mSearchTintView.setVisibility(View.GONE);
+							}
+						})
+						.start();
 			}
 
 			@Override
 			public void onSearchExit() {
 				mResultAdapter.clear();
-				if(mRecyclerView.getVisibility() == View.VISIBLE) {
+				if (mRecyclerView.getVisibility() == View.VISIBLE) {
 					mRecyclerView.setVisibility(View.GONE);
 				}
 			}
@@ -154,7 +154,7 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 
 			@Override
 			public void onSearch(String string) {
-				Toast.makeText(MenuItemSampleActivity.this, string +" Searched", Toast.LENGTH_LONG).show();
+				Toast.makeText(MenuItemSampleActivity.this, string + " Searched", Toast.LENGTH_LONG).show();
 				mRecyclerView.setVisibility(View.VISIBLE);
 				fillResultToRecyclerView(string);
 			}
@@ -185,5 +185,19 @@ public class MenuItemSampleActivity extends AppCompatActivity {
             mSearchView.populateEditText(matches);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if(mSearchView.isSearching()) {
+			mSearchView.closeSearch();
+		} else if(mRecyclerView.getVisibility() == View.VISIBLE) {
+			mResultAdapter.clear();
+			mRecyclerView.setVisibility(View.GONE);
+		} else if(mSearchView.isEditing()) {
+			mSearchView.cancelEditing();
+		} else {
+			super.onBackPressed();
+		}
 	}
 }

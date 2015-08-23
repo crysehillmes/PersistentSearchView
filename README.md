@@ -14,6 +14,14 @@ A library that implements Google Play like PersistentSearch view.
        src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
 </a>
 
+Or APK [Here](https://raw.githubusercontent.com/crysehillmes/PersistentSearchView/master/sample-apk/sample.apk)
+
+## Integration
+
+You can import from `jCenter()`:
+
+`compile 'org.cryse.widget:persistentsearchview:1.0.3@aar'`
+
 ## Custom Attributes
 
 ```xml
@@ -118,6 +126,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 If you don't want to use default voice recognizer, you could inherit from abstract class VoiceRecognitionDelegate and implement your own recognizer.
 
 ## Screenshot
+
+![Screenshot1](https://raw.githubusercontent.com/crysehillmes/PersistentSearchView/master/screenshots/screenshot1.png)
+![Screenshot2](https://raw.githubusercontent.com/crysehillmes/PersistentSearchView/master/screenshots/screenshot2.png)
 
 ## Thanks
 

@@ -140,6 +140,15 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 			}
 
 			@Override
+			public boolean onSearchEditBackPressed() {
+                if(mSearchView.isEditing()) {
+                    mSearchView.cancelEditing();
+                    return true;
+                }
+                return false;
+			}
+
+			@Override
 			public void onSearchExit() {
 				mResultAdapter.clear();
 				if (mRecyclerView.getVisibility() == View.VISIBLE) {
@@ -194,8 +203,6 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 		} else if(mRecyclerView.getVisibility() == View.VISIBLE) {
 			mResultAdapter.clear();
 			mRecyclerView.setVisibility(View.GONE);
-		} else if(mSearchView.isEditing()) {
-			mSearchView.cancelEditing();
 		} else {
 			super.onBackPressed();
 		}

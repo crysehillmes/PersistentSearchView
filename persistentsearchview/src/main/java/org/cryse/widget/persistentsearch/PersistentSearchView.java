@@ -268,6 +268,8 @@ public class PersistentSearchView extends RevealViewGroup {
                     clearSuggestions();
                     fromEditingToSearch(true);
                     return true;
+                } else if(keyCode == KeyEvent.KEYCODE_BACK) {
+                    return mSearchListener != null && mSearchListener.onSearchEditBackPressed();
                 }
                 return false;
             }
@@ -968,6 +970,11 @@ public class PersistentSearchView extends RevealViewGroup {
          * Called when search state change from SEARCH and EditText, Suggestions gone
          */
         void onSearchEditClosed();
+
+        /**
+         * Called when edit text get focus and backpressed
+         */
+        boolean onSearchEditBackPressed();
 
         /**
          * Called when search back to start state.

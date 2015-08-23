@@ -116,6 +116,11 @@ public class MainActivity extends Activity {
 			}
 
             @Override
+            public boolean onSearchEditBackPressed() {
+                return false;
+            }
+
+            @Override
             public void onSearchExit() {
                 mResultAdapter.clear();
                 if(mRecyclerView.getVisibility() == View.VISIBLE) {

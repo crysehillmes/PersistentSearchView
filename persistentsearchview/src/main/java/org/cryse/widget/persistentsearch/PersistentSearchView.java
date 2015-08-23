@@ -995,6 +995,10 @@ public class PersistentSearchView extends RevealViewGroup {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
+        if(!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
         this.mAvoidTriggerTextWatcher = true;
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());

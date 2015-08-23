@@ -7,7 +7,6 @@
 com_crashlytics_export_strings.xml
 
 # built application files
-*.apk
 *.ap_
 
 # files for the dex VM

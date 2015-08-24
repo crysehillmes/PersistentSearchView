@@ -256,7 +256,7 @@ public class PersistentSearchView extends RevealViewGroup {
                                           KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     clearSuggestions();
-                    fromEditingToSearch(true);
+                    fromEditingToSearch(true, false);
                     return true;
                 }
                 return false;
@@ -266,9 +266,9 @@ public class PersistentSearchView extends RevealViewGroup {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     clearSuggestions();
-                    fromEditingToSearch(true);
+                    fromEditingToSearch(true, false);
                     return true;
-                } else if(keyCode == KeyEvent.KEYCODE_BACK) {
+                } else if (keyCode == KeyEvent.KEYCODE_BACK) {
                     return mSearchListener != null && mSearchListener.onSearchEditBackPressed();
                 }
                 return false;
@@ -676,7 +676,7 @@ public class PersistentSearchView extends RevealViewGroup {
                                     long arg3) {
                 SearchItem result = mSearchSuggestions.get(arg2);
                 setSearchString(result.getValue(), true);
-                fromEditingToSearch();
+                fromEditingToSearch(true, false);
             }
 
         });
@@ -818,15 +818,19 @@ public class PersistentSearchView extends RevealViewGroup {
     }
 
     private void fromEditingToSearch() {
-        fromEditingToSearch(false);
+        fromEditingToSearch(false, false);
     }
 
-    private void fromEditingToSearch(boolean forceSearch) {
+    private void fromEditingToSearch(boolean avoidSearch) {
+        fromEditingToSearch(false, avoidSearch);
+    }
+
+    private void fromEditingToSearch(boolean forceSearch, boolean avoidSearch) {
         if(TextUtils.isEmpty(getSearchText())) {
             fromEditingToNormal();
         } else {
             setCurrentState(SearchViewState.SEARCH);
-            if(!getSearchText().equals(mLogoView.getText()) || forceSearch) {
+            if((!getSearchText().equals(mLogoView.getText()) || forceSearch) && !avoidSearch) {
                 search();
             }
             closeSearchInternal();
@@ -895,7 +899,7 @@ public class PersistentSearchView extends RevealViewGroup {
         if(TextUtils.isEmpty(mLogoView.getText())) {
             fromEditingToNormal();
         } else {
-            fromEditingToSearch();
+            fromEditingToSearch(true);
         }
     }
 

@@ -3,20 +3,17 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion appCompileSdkVersion
     buildToolsVersion appBuildToolsVersion
-
     defaultConfig {
         applicationId "org.cryse.widget.persistentsearch.sample"
         minSdkVersion appMinSdkVersion
         targetSdkVersion appTargetSdkVersion
-        versionCode appVersionCode
         versionName appVersionName
+        signingConfig signingConfigs.debug
     }
-
     signingConfigs {
         debug {}
         release {}
     }
-
     buildTypes {
         debug {
             debuggable true

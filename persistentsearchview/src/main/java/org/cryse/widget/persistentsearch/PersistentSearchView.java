@@ -14,6 +14,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -22,6 +23,7 @@ import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -717,7 +719,39 @@ public class PersistentSearchView extends RevealViewGroup {
                 mCustomKeyboardView.setVisibility(View.VISIBLE);
                 mCustomKeyboardView.setEnabled(true);
                 ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getApplicationWindowToken(), 0);
+
+                //Enable cursor, but still prevent default keyboard from showing up
+                OnTouchListener otl = new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                Layout layout = ((EditText) v).getLayout();
+                                float x = event.getX() + mSearchEditText.getScrollX();
+                                int offset = layout.getOffsetForHorizontal(0, x);
+                                if (offset > 0)
+                                    if (x > layout.getLineMax(0))
+                                        mSearchEditText.setSelection(offset);     // touch was at the end of the text
+                                    else
+                                        mSearchEditText.setSelection(offset - 1);
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                layout = ((EditText) v).getLayout();
+                                x = event.getX() + mSearchEditText.getScrollX();
+                                offset = layout.getOffsetForHorizontal(0, x);
+                                if (offset > 0)
+                                    if (x > layout.getLineMax(0))
+                                        mSearchEditText.setSelection(offset);     // Touchpoint was at the end of the text
+                                    else
+                                        mSearchEditText.setSelection(offset - 1);
+                                break;
+                        }
+                        return true;
+                    }
+                };
+                mSearchEditText.setOnTouchListener(otl);
             } else {
+                mSearchEditText.setOnTouchListener(null);
                 InputMethodManager inputMethodManager = (InputMethodManager) getContext()
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.toggleSoftInputFromWindow(

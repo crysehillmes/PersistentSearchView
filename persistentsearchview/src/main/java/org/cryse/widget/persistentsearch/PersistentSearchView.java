@@ -79,6 +79,7 @@ public class PersistentSearchView extends RevealViewGroup {
     private int mSearchTextColor;
     private int mArrorButtonColor;
     private Drawable mLogoDrawable;
+    private String mStringLogoDrawable;
     private int mSearchEditTextColor;
     private String mSearchEditTextHint;
     private int mSearchEditTextHintColor;
@@ -166,6 +167,7 @@ public class PersistentSearchView extends RevealViewGroup {
             mSearchCardElevation = attrsValue.getDimensionPixelSize(R.styleable.PersistentSearchView_persistentSV_searchCardElevation, -1);
             mSearchTextColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_searchTextColor, Color.BLACK);
             mLogoDrawable = attrsValue.getDrawable(R.styleable.PersistentSearchView_persistentSV_logoDrawable);
+            mStringLogoDrawable = attrsValue.getString(R.styleable.PersistentSearchView_persistentSV_logoString);
             mSearchEditTextColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_editTextColor, Color.BLACK);
             mSearchEditTextHint = attrsValue.getString(R.styleable.PersistentSearchView_persistentSV_editHintText);
             mSearchEditTextHintColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_editHintTextColor, Color.BLACK);
@@ -238,6 +240,10 @@ public class PersistentSearchView extends RevealViewGroup {
         this.mSearchEditText.setHintTextColor(mSearchEditTextHintColor);
         if (mLogoDrawable != null) {
             this.mLogoView.setLogo(mLogoDrawable);
+        }
+        else if (mStringLogoDrawable != null)
+        {
+            this.mLogoView.setLogo(mStringLogoDrawable);
         }
         this.mLogoView.setTextColor(mSearchTextColor);
     }
@@ -707,7 +713,7 @@ public class PersistentSearchView extends RevealViewGroup {
             showClearButton();
         }
         if (openKeyboard) {
-            if(showCustomKeyboard) {
+            if(showCustomKeyboard && mCustomKeyboardView != null) {
                 mCustomKeyboardView.setVisibility(View.VISIBLE);
                 mCustomKeyboardView.setEnabled(true);
                 ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getApplicationWindowToken(), 0);
@@ -734,12 +740,15 @@ public class PersistentSearchView extends RevealViewGroup {
         if (mSearchListener != null)
             mSearchListener.onSearchEditClosed();
         showMicButton();
+
         InputMethodManager inputMethodManager = (InputMethodManager) getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getApplicationWindowToken(),
                 0);
-        mCustomKeyboardView.setVisibility(View.GONE);
-        mCustomKeyboardView.setEnabled(false);
+        if(mCustomKeyboardView != null) {
+            mCustomKeyboardView.setVisibility(View.GONE);
+            mCustomKeyboardView.setEnabled(false);
+        }
     }
 
     public boolean isEditing() {

@@ -6,5 +6,6 @@
     <string name="text_back_arrow_sample">Toolbar Back Sample</string>
     <string name="text_github_repo">GitHub Repo</string>
     <string name="url_github_repo">https://github.com/crysehillmes/PersistentSearchView</string>
+    <string name="string_logo">Text Logo Sample</string>
 
 </resources>

@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:elevation="4dp"
-        app:persistentSV_logoDrawable="@drawable/ic_logo"
+        app:persistentSV_logoString="@string/string_logo"
         app:persistentSV_searchTextColor="?android:textColorPrimary"
         app:persistentSV_editTextColor="?android:textColorPrimary"
         app:persistentSV_editHintText="Search"

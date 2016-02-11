@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.inputmethodservice.KeyboardView;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -84,6 +85,9 @@ public class PersistentSearchView extends RevealViewGroup {
     private SearchSuggestionsBuilder mSuggestionBuilder;
     private SearchItemAdapter mSearchItemAdapter;
     private ArrayList<SearchItem> mSearchSuggestions;
+    private KeyboardView mCustomKeyboardView;
+    private boolean showCustomKeyboard;
+
     public PersistentSearchView(Context context) {
         super(context);
         init(null);
@@ -96,6 +100,16 @@ public class PersistentSearchView extends RevealViewGroup {
     public PersistentSearchView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs);
+    }
+
+    public void setCustomKeyboardView(KeyboardView customKeyboardView)
+    {
+        mCustomKeyboardView = customKeyboardView;
+    }
+
+    public void enableCustomKeyboardView(boolean enable)
+    {
+        showCustomKeyboard = enable;
     }
 
     static float calculateVerticalPadding(CardView cardView) {
@@ -693,11 +707,17 @@ public class PersistentSearchView extends RevealViewGroup {
             showClearButton();
         }
         if (openKeyboard) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getContext()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.toggleSoftInputFromWindow(
-                    getApplicationWindowToken(),
-                    InputMethodManager.SHOW_FORCED, 0);
+            if(showCustomKeyboard) {
+                mCustomKeyboardView.setVisibility(View.VISIBLE);
+                mCustomKeyboardView.setEnabled(true);
+                ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getApplicationWindowToken(), 0);
+            } else {
+                InputMethodManager inputMethodManager = (InputMethodManager) getContext()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInputFromWindow(
+                        getApplicationWindowToken(),
+                        InputMethodManager.SHOW_FORCED, 0);
+            }
         }
     }
 
@@ -718,6 +738,8 @@ public class PersistentSearchView extends RevealViewGroup {
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getApplicationWindowToken(),
                 0);
+        mCustomKeyboardView.setVisibility(View.GONE);
+        mCustomKeyboardView.setEnabled(false);
     }
 
     public boolean isEditing() {

@@ -726,6 +726,8 @@ public class PersistentSearchView extends RevealViewGroup {
                     public boolean onTouch(View v, MotionEvent event) {
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
+                                mCustomKeyboardView.setVisibility(View.VISIBLE);
+                                mCustomKeyboardView.setEnabled(true);
                                 Layout layout = ((EditText) v).getLayout();
                                 float x = event.getX() + mSearchEditText.getScrollX();
                                 int offset = layout.getOffsetForHorizontal(0, x);

@@ -1,45 +1,73 @@
 package org.cryse.widget.persistentsearch;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 
 public class TextDrawable extends Drawable {
 
-    private final String text;
-    private final Paint paint;
+    private final String mText;
+    private final Paint mPaint;
+    private int mIntrinsicWidth;
+    private int mIntrinsicHeight;
+    private float mTextSize;
 
-    public TextDrawable(String text) {
+    public TextDrawable(Resources resources, String text) {
 
-        this.text = text;
+        this.mText = text;
 
-        this.paint = new Paint();
-        paint.setColor(Color.GRAY);
-        paint.setTextSize(66f);
-        paint.setAntiAlias(true);
-        paint.setFakeBoldText(false);
-        paint.setShadowLayer(2f, 0, 0, Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextAlign(Paint.Align.LEFT);
+        mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                24f, resources.getDisplayMetrics());
+
+        this.mPaint = new Paint();
+        mPaint.setColor(Color.GRAY);
+        mPaint.setTextSize(mTextSize);
+        mPaint.setAntiAlias(true);
+        mPaint.setFakeBoldText(false);
+        mPaint.setShadowLayer(2f, 0, 0, Color.BLACK);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setTextAlign(Paint.Align.LEFT);
+
+        Rect bounds = new Rect();
+        mPaint.getTextBounds(mText, 0, mText.length(), bounds);
+        mIntrinsicWidth = bounds.width();
+        mIntrinsicHeight = bounds.height();
     }
 
     @Override
     public void draw(Canvas canvas) {
-        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
-        canvas.drawText(text, 0, yPos, paint);
+        Rect r = getBounds();
+
+        int count = canvas.save();
+        canvas.translate(r.left, r.top);
+        int height = canvas.getHeight() < 0 ? r.height() : canvas.getHeight();
+        canvas.drawText(mText, 0, height / 2 - ((mPaint.descent() + mPaint.ascent()) / 2), mPaint);
+        canvas.restoreToCount(count);
+    }
+
+    @Override
+    public int getIntrinsicWidth() {
+        return mIntrinsicWidth;
+    }
+    @Override
+    public int getIntrinsicHeight() {
+        return mIntrinsicHeight;
     }
 
     @Override
     public void setAlpha(int alpha) {
-        paint.setAlpha(alpha);
+        mPaint.setAlpha(alpha);
     }
 
     @Override
     public void setColorFilter(ColorFilter cf) {
-        paint.setColorFilter(cf);
+        mPaint.setColorFilter(cf);
     }
 
     @Override

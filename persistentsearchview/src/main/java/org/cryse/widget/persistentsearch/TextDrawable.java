@@ -28,7 +28,8 @@ public class TextDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawText(text, 0, 110, paint);
+        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
+        canvas.drawText(text, 0, yPos, paint);
     }
 
     @Override

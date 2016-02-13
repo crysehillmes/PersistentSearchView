@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.inputmethodservice.KeyboardView;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -13,6 +14,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -21,6 +23,7 @@ import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -78,12 +81,16 @@ public class PersistentSearchView extends RevealViewGroup {
     private int mSearchTextColor;
     private int mArrorButtonColor;
     private Drawable mLogoDrawable;
+    private String mStringLogoDrawable;
     private int mSearchEditTextColor;
     private String mSearchEditTextHint;
     private int mSearchEditTextHintColor;
     private SearchSuggestionsBuilder mSuggestionBuilder;
     private SearchItemAdapter mSearchItemAdapter;
     private ArrayList<SearchItem> mSearchSuggestions;
+    private KeyboardView mCustomKeyboardView;
+    private boolean showCustomKeyboard;
+
     public PersistentSearchView(Context context) {
         super(context);
         init(null);
@@ -96,6 +103,16 @@ public class PersistentSearchView extends RevealViewGroup {
     public PersistentSearchView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs);
+    }
+
+    public void setCustomKeyboardView(KeyboardView customKeyboardView)
+    {
+        mCustomKeyboardView = customKeyboardView;
+    }
+
+    public void enableCustomKeyboardView(boolean enable)
+    {
+        showCustomKeyboard = enable;
     }
 
     static float calculateVerticalPadding(CardView cardView) {
@@ -152,6 +169,7 @@ public class PersistentSearchView extends RevealViewGroup {
             mSearchCardElevation = attrsValue.getDimensionPixelSize(R.styleable.PersistentSearchView_persistentSV_searchCardElevation, -1);
             mSearchTextColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_searchTextColor, Color.BLACK);
             mLogoDrawable = attrsValue.getDrawable(R.styleable.PersistentSearchView_persistentSV_logoDrawable);
+            mStringLogoDrawable = attrsValue.getString(R.styleable.PersistentSearchView_persistentSV_logoString);
             mSearchEditTextColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_editTextColor, Color.BLACK);
             mSearchEditTextHint = attrsValue.getString(R.styleable.PersistentSearchView_persistentSV_editHintText);
             mSearchEditTextHintColor = attrsValue.getColor(R.styleable.PersistentSearchView_persistentSV_editHintTextColor, Color.BLACK);
@@ -224,6 +242,10 @@ public class PersistentSearchView extends RevealViewGroup {
         this.mSearchEditText.setHintTextColor(mSearchEditTextHintColor);
         if (mLogoDrawable != null) {
             this.mLogoView.setLogo(mLogoDrawable);
+        }
+        else if (mStringLogoDrawable != null)
+        {
+            this.mLogoView.setLogo(mStringLogoDrawable);
         }
         this.mLogoView.setTextColor(mSearchTextColor);
     }
@@ -693,11 +715,51 @@ public class PersistentSearchView extends RevealViewGroup {
             showClearButton();
         }
         if (openKeyboard) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getContext()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.toggleSoftInputFromWindow(
-                    getApplicationWindowToken(),
-                    InputMethodManager.SHOW_FORCED, 0);
+            if(showCustomKeyboard && mCustomKeyboardView != null) {
+                mCustomKeyboardView.setVisibility(View.VISIBLE);
+                mCustomKeyboardView.setEnabled(true);
+                ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getApplicationWindowToken(), 0);
+
+                //Enable cursor, but still prevent default keyboard from showing up
+                OnTouchListener otl = new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                mCustomKeyboardView.setVisibility(View.VISIBLE);
+                                mCustomKeyboardView.setEnabled(true);
+                                Layout layout = ((EditText) v).getLayout();
+                                float x = event.getX() + mSearchEditText.getScrollX();
+                                int offset = layout.getOffsetForHorizontal(0, x);
+                                if (offset > 0)
+                                    if (x > layout.getLineMax(0))
+                                        mSearchEditText.setSelection(offset);     // touch was at the end of the text
+                                    else
+                                        mSearchEditText.setSelection(offset - 1);
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                layout = ((EditText) v).getLayout();
+                                x = event.getX() + mSearchEditText.getScrollX();
+                                offset = layout.getOffsetForHorizontal(0, x);
+                                if (offset > 0)
+                                    if (x > layout.getLineMax(0))
+                                        mSearchEditText.setSelection(offset);     // Touchpoint was at the end of the text
+                                    else
+                                        mSearchEditText.setSelection(offset - 1);
+                                break;
+                        }
+                        return true;
+                    }
+                };
+                mSearchEditText.setOnTouchListener(otl);
+            } else {
+                mSearchEditText.setOnTouchListener(null);
+                InputMethodManager inputMethodManager = (InputMethodManager) getContext()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInputFromWindow(
+                        getApplicationWindowToken(),
+                        InputMethodManager.SHOW_FORCED, 0);
+            }
         }
     }
 
@@ -714,10 +776,15 @@ public class PersistentSearchView extends RevealViewGroup {
         if (mSearchListener != null)
             mSearchListener.onSearchEditClosed();
         showMicButton();
+
         InputMethodManager inputMethodManager = (InputMethodManager) getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getApplicationWindowToken(),
                 0);
+        if(mCustomKeyboardView != null) {
+            mCustomKeyboardView.setVisibility(View.GONE);
+            mCustomKeyboardView.setEnabled(false);
+        }
     }
 
     public boolean isEditing() {

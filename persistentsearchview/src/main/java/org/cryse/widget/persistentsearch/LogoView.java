@@ -30,6 +30,12 @@ public class LogoView extends TextView {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    public void setLogo(String logoText)
+    {
+        this.mLogoDrawable = new TextDrawable(logoText);
+        this.invalidate();
+    }
+
     public void setLogo(Drawable drawable) {
         this.mLogoDrawable = drawable;
         this.invalidate();

@@ -696,6 +696,7 @@ public class PersistentSearchView extends RevealViewGroup {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
+                hideKeyboard();
                 SearchItem result = mSearchSuggestions.get(arg2);
                 setSearchString(result.getValue(), true);
                 fromEditingToSearch(true, false);
@@ -715,12 +716,11 @@ public class PersistentSearchView extends RevealViewGroup {
             showClearButton();
         }
         if (openKeyboard) {
-            if(showCustomKeyboard && mCustomKeyboardView != null) {
+            if(showCustomKeyboard && mCustomKeyboardView != null) { // Show custom keyboard
                 mCustomKeyboardView.setVisibility(View.VISIBLE);
                 mCustomKeyboardView.setEnabled(true);
-                ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getApplicationWindowToken(), 0);
 
-                //Enable cursor, but still prevent default keyboard from showing up
+                // Enable cursor, but still prevent default keyboard from showing up
                 OnTouchListener otl = new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -733,7 +733,7 @@ public class PersistentSearchView extends RevealViewGroup {
                                 int offset = layout.getOffsetForHorizontal(0, x);
                                 if (offset > 0)
                                     if (x > layout.getLineMax(0))
-                                        mSearchEditText.setSelection(offset);     // touch was at the end of the text
+                                        mSearchEditText.setSelection(offset);     // Touch was at the end of the text
                                     else
                                         mSearchEditText.setSelection(offset - 1);
                                 break;
@@ -743,7 +743,7 @@ public class PersistentSearchView extends RevealViewGroup {
                                 offset = layout.getOffsetForHorizontal(0, x);
                                 if (offset > 0)
                                     if (x > layout.getLineMax(0))
-                                        mSearchEditText.setSelection(offset);     // Touchpoint was at the end of the text
+                                        mSearchEditText.setSelection(offset);     // Touch point was at the end of the text
                                     else
                                         mSearchEditText.setSelection(offset - 1);
                                 break;
@@ -752,7 +752,7 @@ public class PersistentSearchView extends RevealViewGroup {
                     }
                 };
                 mSearchEditText.setOnTouchListener(otl);
-            } else {
+            } else { // Show default keyboard
                 mSearchEditText.setOnTouchListener(null);
                 InputMethodManager inputMethodManager = (InputMethodManager) getContext()
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -777,13 +777,16 @@ public class PersistentSearchView extends RevealViewGroup {
             mSearchListener.onSearchEditClosed();
         showMicButton();
 
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getApplicationWindowToken(),
-                0);
-        if(mCustomKeyboardView != null) {
+        hideKeyboard();
+    }
+
+    private void hideKeyboard() {
+        if(showCustomKeyboard && mCustomKeyboardView != null) {
             mCustomKeyboardView.setVisibility(View.GONE);
             mCustomKeyboardView.setEnabled(false);
+        }
+        else {
+            ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getApplicationWindowToken(), 0);
         }
     }
 

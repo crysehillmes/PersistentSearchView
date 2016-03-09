@@ -32,17 +32,17 @@ public class LogoView extends TextView {
 
     public void setLogo(String logoText)
     {
-        this.mLogoDrawable = new TextDrawable(logoText);
-        this.invalidate();
-    }
-
-    public void setLogo(Drawable drawable) {
-        this.mLogoDrawable = drawable;
-        this.invalidate();
+        setLogo(new TextDrawable(getResources(), logoText));
     }
 
     public void setLogo(@DrawableRes int drawableRes) {
         setLogo(ResourcesCompat.getDrawable(getResources(), drawableRes, null));
+    }
+
+    public void setLogo(Drawable drawable) {
+        this.mLogoDrawable = drawable;
+        mLogoDrawable.setBounds(0,0, mLogoDrawable.getIntrinsicWidth(), mLogoDrawable.getIntrinsicHeight());
+        this.invalidate();
     }
 
     @Override
@@ -51,7 +51,6 @@ public class LogoView extends TextView {
             super.onDraw(canvas);
         else {
             if(mLogoDrawable != null) {
-                mLogoDrawable.setBounds(0,0, mLogoDrawable.getIntrinsicWidth(), mLogoDrawable.getIntrinsicHeight());
                 mLogoDrawable.draw(canvas);
             }
         }

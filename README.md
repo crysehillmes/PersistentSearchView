@@ -28,6 +28,7 @@ You can import from `jCenter()`:
 <declare-styleable name="PersistentSearchView">
 	 <attr name="persistentSV_searchTextColor" format="color"/>
 	<attr name="persistentSV_logoDrawable" format="reference"/>
+	<attr name="persistentSV_logoString" format="string"/>
 	<attr name="persistentSV_editTextColor" format="color"/>
 	<attr name="persistentSV_editHintText" format="string"/>
 	<attr name="persistentSV_editHintTextColor" format="color"/>

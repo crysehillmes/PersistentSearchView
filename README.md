@@ -11,7 +11,7 @@ A library that implements Google Play like PersistentSearch view.
 
 <a href="https://play.google.com/store/apps/details?id=org.cryse.widget.persistentsearch.sample">
   <img alt="Get it on Google Play"
-       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+       src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="60" />
 </a>
 
 Or APK [Here](https://raw.githubusercontent.com/crysehillmes/PersistentSearchView/master/sample-apk/sample.apk)
@@ -20,7 +20,7 @@ Or APK [Here](https://raw.githubusercontent.com/crysehillmes/PersistentSearchVie
 
 You can import from `jCenter()`:
 
-`compile 'org.cryse.widget:persistentsearchview:1.0.3@aar'`
+`compile 'org.cryse.widget:persistentsearchview:1.0.4@aar'`
 
 ## Custom Attributes
 
@@ -133,8 +133,9 @@ If you don't want to use default voice recognizer, you could inherit from abstra
 
 ## Thanks
 
-- The project originally came from  [Quinny898/PersistentSearch](https://github.com/Quinny898/PersistentSearch).
+- The project originally came from [Quinny898/PersistentSearch](https://github.com/Quinny898/PersistentSearch).
 - [Ozodrukh/CircularReveal](https://github.com/ozodrukh/CircularReveal) for reveal animation.
+- [kee23](https://github.com/kee23)
 
 ## License
 

@@ -1,6 +1,12 @@
 package org.cryse.widget.persistentsearch;
 
 public class SimpleSearchListener implements PersistentSearchView.SearchListener {
+
+    @Override
+    public boolean onSuggestion(SearchItem searchItem) {
+        return true;
+    }
+
     @Override
     public void onSearchCleared() {
 

@@ -222,6 +222,10 @@ public class PersistentSearchView extends RevealViewGroup {
         setUpListeners();
     }
 
+    public ArrayList<SearchItem> getSearchSuggestions() {
+        return mSearchSuggestions;
+    }
+
     private void bindViews() {
         this.mSearchCardView = (CardView) findViewById(R.id.cardview_search);
         this.mHomeButton = (HomeButton) findViewById(R.id.button_home);

@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import org.cryse.widget.persistentsearch.DefaultVoiceRecognizerDelegate;
 import org.cryse.widget.persistentsearch.PersistentSearchView;
 import org.cryse.widget.persistentsearch.PersistentSearchView.HomeButtonListener;
 import org.cryse.widget.persistentsearch.PersistentSearchView.SearchListener;
+import org.cryse.widget.persistentsearch.SearchItem;
 import org.cryse.widget.persistentsearch.VoiceRecognitionDelegate;
 
 import java.util.ArrayList;
@@ -109,6 +111,12 @@ public class MenuItemSampleActivity extends AppCompatActivity {
 		});
         mSearchView.setSuggestionBuilder(new SampleSuggestionsBuilder(this));
         mSearchView.setSearchListener(new SearchListener() {
+
+			@Override
+			public boolean onSuggestion(SearchItem searchItem) {
+				Log.d("onSuggestion", searchItem.getTitle());
+				return false;
+			}
 
 			@Override
 			public void onSearchEditOpened() {

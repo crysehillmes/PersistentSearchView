@@ -222,6 +222,10 @@ public class PersistentSearchView extends RevealViewGroup {
         setUpListeners();
     }
 
+    public ArrayList<SearchItem> getSearchSuggestions() {
+        return mSearchSuggestions;
+    }
+
     private void bindViews() {
         this.mSearchCardView = (CardView) findViewById(R.id.cardview_search);
         this.mHomeButton = (HomeButton) findViewById(R.id.button_home);
@@ -694,12 +698,18 @@ public class PersistentSearchView extends RevealViewGroup {
         mSuggestionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 hideKeyboard();
                 SearchItem result = mSearchSuggestions.get(arg2);
-                setSearchString(result.getValue(), true);
-                fromEditingToSearch(true, false);
+                if (mSearchListener != null) {
+                    if (mSearchListener.onSuggestion(result)) {
+                        setSearchString(result.getValue(), true);
+                        fromEditingToSearch(true, false);
+                    }
+                } else {
+                    setSearchString(result.getValue(), true);
+                    fromEditingToSearch(true, false);
+                }
             }
 
         });
@@ -1017,6 +1027,11 @@ public class PersistentSearchView extends RevealViewGroup {
     }
 
     public interface SearchListener {
+
+        /**
+         * Called when a suggestion is pressed is pressed
+         */
+        boolean onSuggestion(SearchItem searchItem);
 
         /**
          * Called when the clear button is pressed

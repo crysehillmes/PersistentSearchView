@@ -9,6 +9,7 @@ import android.speech.RecognizerIntent;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import org.cryse.widget.persistentsearch.DefaultVoiceRecognizerDelegate;
 import org.cryse.widget.persistentsearch.PersistentSearchView;
 import org.cryse.widget.persistentsearch.PersistentSearchView.HomeButtonListener;
 import org.cryse.widget.persistentsearch.PersistentSearchView.SearchListener;
+import org.cryse.widget.persistentsearch.SearchItem;
 import org.cryse.widget.persistentsearch.VoiceRecognitionDelegate;
 
 import java.util.ArrayList;
@@ -140,7 +142,13 @@ public class MainActivity extends Activity {
                 fillResultToRecyclerView(string);
 			}
 
-			@Override
+            @Override
+            public boolean onSuggestion(SearchItem searchItem) {
+                Log.d("onSuggestion", searchItem.getTitle());
+                return false;
+            }
+
+            @Override
 			public void onSearchCleared() {
 				//Called when the clear button is clicked
 			}

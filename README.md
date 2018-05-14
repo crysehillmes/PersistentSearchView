@@ -1,3 +1,4 @@
+## DEPRECATED: THIS PROJECT IS NO LONGER MAINTAINED
 # Persistent Search
 A library that implements Google Play like PersistentSearch view.
 
